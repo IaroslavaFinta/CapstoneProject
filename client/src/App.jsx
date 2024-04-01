@@ -41,7 +41,7 @@ function App() {
               element={<Login />}
             />
             <Route
-              path="/books"
+              path="/products"
               element={<AllProducts />}
             />
             <Route

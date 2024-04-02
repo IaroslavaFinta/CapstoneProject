@@ -59,6 +59,12 @@ body {
   text-align: center;
 }
 
+.product{
+  padding: 10px;
+  margin: 10px;
+  list-style-type: none;
+}
+
 form {
   color: black;
   background-color: white;
@@ -114,13 +120,12 @@ td {
   font-size: smaller;
 }
 
-.singleBook{
-  margin: 70px;
-  font-size: medium;
-}
-
 h3 {
   font-size: smaller;
+}
+
+p{
+  font-size: x-small;
 }
 
 img {

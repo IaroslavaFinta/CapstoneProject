@@ -14,10 +14,10 @@ export default function AllProducts() {
 
   return (
     <>
-      <ul>
+      <ul className="product">
         {products.map((product) => {
           return (
-            <li key={product.id}>
+            <li key={product.id} className="product">
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <p>{product.price}</p>

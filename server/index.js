@@ -2,6 +2,8 @@
 const {
   client,
   createTables,
+  seeCategories,
+  seeCategoryProducts,
   seeProducts,
   seeProduct,
   createUser,
@@ -16,6 +18,7 @@ const {
   deleteUser,
   seeUsers,
   seeCarts,
+  createCategory,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -79,6 +82,22 @@ app.get("/api/products", async (req, res, next) => {
 app.get("/api/products/:productId", async (req, res, next) => {
   try {
     res.send(await seeProduct(req.params.productId));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/categories", async (req, res, next) => {
+  try {
+    res.send(await seeCategories());
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/categories/:categoryId", async (req, res, next) => {
+  try {
+    res.send(await seeCategoryProducts(req.params.categoryId));
   } catch (ex) {
     next(ex);
   }
@@ -267,7 +286,8 @@ app.post("/api/users/:id/products", isLoggedIn, isAdmin, async (req, res, next) 
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      inventory: req.body.inventory
+      inventory: req.body.inventory,
+      category_id: req.body.category_id
     }));
   } catch (ex) {
     next(ex);
@@ -287,7 +307,8 @@ app.put("/api/users/:id/products/:productId", isLoggedIn, isAdmin, async (req, r
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      inventory: req.body.inventory
+      inventory: req.body.inventory,
+      category_id: req.body.category_id
     }));
   } catch (ex) {
     next(ex);
@@ -328,31 +349,125 @@ const init = async () => {
   console.log("connected to database");
   await createTables();
   console.log("tables created");
-  const [jack, lily, mark, coke, pasta, chocolate] = await Promise.all([
+  const [clothes, accessories, books] = await Promise.all([
+    createCategory({ name: "clothes" }),
+    createCategory({ name: "accessories" }),
+    createCategory({ name: "books" }),
+  ]);
+  const [jack, lily, mark] = await Promise.all([
     createUser({ email: "jack@gmail.com", password: "mooo", is_admin: true}),
     createUser({ email: "lily@gmail.com", password: "rufruf"}),
     createUser({ email: "mark@gmail.com", password: "barkbark"}),
     createProduct({
-      name: "coke",
-      price: 3.99,
+      name: "Magician Robe Hooded Cape",
+      price: 23.99,
       description: "very good cookie",
       inventory: 5,
+      category_id: clothes.id,
     }),
     createProduct({
-      name: "pasta",
-      price: 5.85,
-      description: "very good pasta",
-      inventory: 3,
+      name: "Harry Potter Men's Quidditch Seekert-Shirt",
+      price: 13.99,
+      description: "Standard Adult sizes and Fit that can be worn by women who prefer a looser boyfriend fit",
+      inventory: 5,
+      category_id: clothes.id,
     }),
     createProduct({
-      name: "chocolate",
-      price: 2.99,
-      description: "very good chocolate",
+      name: "Magical Crewneck Sweatshirt Snake Graphic",
+      price: 18.99,
+      description: "This snake sweatshirt is made of cotton blend, soft, comfortable and you will feel comfortable",
+      inventory: 5,
+      category_id: clothes.id,
+    }),
+    createProduct({
+      name: "Harry Potter Slytherin House Crew Socks 2 Pair Pack",
+      price: 11.99,
+      description: "Fits shoe size 6-12. 70% Polyester, 20% Nylon, 10% Spandex. Includes 2 Pairs (1 pair of each design).",
+      inventory: 5,
+      category_id: clothes.id,
+    }),
+    createProduct({
+      name: "Necklace Wizardry Horcrux Hourglass",
+      price: 25.99,
+      description: "This Necklace is centered with a working miniature hourglass and its inner rings rotate. This Necklace is comfortable to wear for all occasions and the chain has a standard length of 18 inches.",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Slytherin Glitter Cup with Straw, 20 oz Green",
+      price: 13.99,
+      description: "Spoontiques acrylic tumblers feature double-wall insulation to remain at the correct temperature. Features a stainless-steel twist lid and a reusable coordinating straw. ",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Cinereplicas Women's Open-Back Slipper",
+      price: 16,
+      description: "Slippers are ultra-comfy and soft. Have been developed under strict adherence to the Warner Bros license.",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Harry Potter Playing Cards",
+      price: 12.89,
+      description: "Harry Potter playing cards are the perfect tribute to the wizarding world; From the philosopher's stone to the deathly hallows: track and experience history and its iconic moments every time you hold it in your hands",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Harry Potter Faux Leather Mini Backpack",
+      price: 41.99,
+      description: "Mini backpack is made of vegan leather (polyurethane), has a front zipper compartment, side pockets, and adjustable back straps. Inside, the backpack continues the theme with unique, coordinating lining",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Harry Potter Color Changing Slytherin Candle, Large 10 oz",
+      price: 23.99,
+      description: "This large 10oz hand-poured candle is filled with the finest ingredients of soy and coco wax and features a double wick, which provides an even, clean 45-hour burn. Glass/Wax. 10 oz. Measures: 3.25 x 4.25 inches",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Spellbinding Wand with Collectible Spell Card",
+      price: 14.99,
+      description: "Measuring at an impressive 13.8 inches in length, this sorcerer's wand includes a storage bag and a spell guide book,",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "LEGO Harry Potter Dobby The House-Elf Building Toy Set",
+      price: 27.99,
+      description: "403-piece building set. A buildable figure measures over 7.5 in. high, 5 in. wide and 4 in. deep",
+      inventory: 5,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "The Noble Collection Harry Potter Marauders Wand Set with Display Stand",
+      price: 153.99,
+      description: "4 Wizard Wands with Marauders Map Display Stand",
       inventory: 3,
+      category_id: accessories.id,
+    }),
+    createProduct({
+      name: "Harry Potter Paperback Box Set (Books 1-7)",
+      price: 84.99,
+      description: "It's time to pass the magic on – with brand new editions of the classic and internationally bestselling series.",
+      inventory: 5,
+      category_id: books.id,
+    }),
+    createProduct({
+      name: "The Baking Book: 40+ Recipes Inspired by the Films ",
+      price: 11.99,
+      description: "Delight in 43 tasty recipes inspired by the Harry Potter films! From Pumpkin Patch Pies to Owl Muffins, Luna's Spectrespecs Cookies to Hogwarts Gingerbread, The Official Harry Potter Baking Cookbook is packed with mouthwatering recipes ",
+      inventory: 5,
+      category_id: books.id,
     }),
   ]);
   const users = await seeUsers();
   console.log("Users: ", users);
+  const category = await seeCategories();
+  console.log("Categories: ", category);
   const products = await seeProducts();
   console.log("Products: ", products);
   const [jackCart, lilyCart, markCart] = await Promise.all([
@@ -362,11 +477,10 @@ const init = async () => {
   ]);
   const carts = await seeCarts();
   console.log("Carts: ", carts);
-
   const productsInCart = await Promise.all([
     createCartProduct({
       cart_id: jackCart.id,
-      product_id: chocolate.id,
+      product_id: HarryPotterPlayingCards.id,
       quantity: 2,
     }),
     createCartProduct({

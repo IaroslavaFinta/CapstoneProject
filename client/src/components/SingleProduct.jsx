@@ -5,25 +5,24 @@ import { API_URL } from "../main";
 export default function SingleProduct() {
   const [productDetails, setProductDetails] = useState({});
   const navigate = useNavigate();
-  let { productId } = useParams();
-
-  async function getSingleProduct() {
-    try {
-      const response = await fetch(`${API_URL}/products/${productId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const result = await response.json();
-      setProductDetails(result.product);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  let { id } = useParams();
 
   useEffect(() => {
+    const getSingleProduct = async() => {
+      try {
+        const response = await fetch(`${API_URL}/api/products/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const result = await response.json();
+        setProductDetails(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getSingleProduct();
-  }, [productDetails]);
+  }, []);
 
   return (
     <>

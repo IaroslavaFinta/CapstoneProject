@@ -75,7 +75,7 @@ const seeProduct = async(id)=> {
     WHERE id=$1
   `;
   const response = await client.query(SQL, [id]);
-  return response.rows;
+  return response.rows[0];
 };
 
 //  log in user

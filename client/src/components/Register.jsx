@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../main";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function Register() {
   };
 
   const register = async (credentials) => {
-    const response = await fetch("/api/auth/register", {
+    const response = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       body: JSON.stringify(credentials),
       headers: {
@@ -31,7 +32,8 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={submit}>
+    <form className="form"
+    onSubmit={submit}>
       <label htmlFor={"email"} className="email">
           Email address:{" "}
       <input

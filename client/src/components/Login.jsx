@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../main";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Login() {
   const attemptLoginWithToken = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      const response = await fetch(`/api/auth/me`, {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           authorization: token,
         },
@@ -30,7 +31,7 @@ export default function Login() {
   };
 
   const login = async (credentials) => {
-    const response = await fetch("/api/auth/login", {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       body: JSON.stringify(credentials),
       headers: {
@@ -57,21 +58,30 @@ export default function Login() {
     <>
       {!auth.id ?
       (
-        <form onSubmit={submit}>
+        <form className="form"
+        onSubmit={submit}>
+          <label htmlFor={"email"} className="email">
+          Email address:{" "}
           <input
+            type={"email"}
             value={email}
             placeholder="email"
             onChange={(ev) => setEmail(ev.target.value)}
           />
+          </label>
+          <label htmlFor={"password"} className="password">
+            Password:{" "}
           <input
+            type={"password"}
             value={password}
             placeholder="password"
             onChange={(ev) => setPassword(ev.target.value)}
           />
+          </label>
           <button disabled={!email || !password}>Login</button>
         </form>
       ) : (
-        <button onClick={logout}>Logout {auth.email}</button>
+        <button onClick={logout}>Logout</button>
       )}
     </>
   );

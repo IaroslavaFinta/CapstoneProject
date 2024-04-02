@@ -34,28 +34,16 @@ body {
   padding: 100px;
 }
 
-.login {
-  line-height: 1.1;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  vertical-align: middle;
-  flex-direction: column;
-  height: 100%;
-  margin-top: 100px;
-}
-
 .navbar {
   justify-content: space-evenly;
   display: flex;
   position: fixed;
-  margin-top: 100px;
+  margin: 100px;
   top: 0;
 }
 
 .nav{
-  padding: 100px;
+  margin: 100px;
   text-align: center;
 }
 
@@ -70,23 +58,19 @@ li {
   padding: 20px;
 }
 
-form {
+.form {
   color: black;
   background-color: white;
-  margin: 40px;
-  padding: 20px;
+  margin-top: 50px;
+  padding: 30px;
   border: 2px solid transparent;
-  border-radius: 8px;
-  margin: 10px;
-  width: 500px;
+  border-radius: 5px;
+  width: auto;
   place-items: center;
-  justify-content: center;
-  display: flex;
-  vertical-align: middle;
-  flex-direction: column;
+  display: grid;
 }
 
-.email, .password, .lastName, .firstName  {
+.email, .password {
   padding: 15px;
 }
 

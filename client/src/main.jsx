@@ -11,3 +11,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </React.StrictMode>,
 )
+
+export const API_URL='http://localhost:3000';

@@ -23,6 +23,7 @@ const {
   findUserWithToken
 } = require("./db");
 
+const cors = require('cors');
 const express = require("express");
 const app = express();
 
@@ -32,10 +33,17 @@ app.use(express.json());
 // Log the requests as they come in
 app.use(require("morgan")("dev"));
 
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT','DELETE'],
+  credentials: true,
+  withCredentials: true,
+}))
+
 //for deployment only
 const path = require('path');
-app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '../client/dist/index.html')));
-app.use('/assets', express.static(path.join(__dirname, '../client/dist/assets'))); 
+// app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '../client/dist/index.html')));
+// app.use('/assets', express.static(path.join(__dirname, '../client/dist/assets'))); 
 
 // middleware function call next with an error if the header named authorization does not have a valid token.
 // If there is a valid token, the req.user should be set to the user who's id is contained in the token
@@ -57,18 +65,6 @@ const isAdmin = async (req, res, next) => {
   }
   next();
 };
-
-// option 2
-// const isAdminOption = async (req, res, next) => {
-//   try {
-//     console.log(req.headers.authorization);
-//     req.user = await findUserWithToken(req.headers.authorization);
-//     next();
-//   } catch (ex) {
-//     next(ex);
-//   }
-// };
-
 
 // NOT LOGIN IN USER
 // functions - view all products, create account, login to account

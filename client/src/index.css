@@ -63,6 +63,11 @@ ul{
   padding: 10px;
   margin: 10px;
   list-style-type: none;
+  display: flex;
+}
+
+li {
+  padding: 20px;
 }
 
 form {
@@ -89,7 +94,7 @@ button {
   border-radius: 8px;
   border: 1px solid black;
   padding: 0.6em 1.2em;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
   background-color: white;
@@ -99,11 +104,11 @@ button {
 }
 
 h3 {
-  font-size: medium;
+  font-size: 1.5rem;
 }
 
 p {
-  font-size: x-small;
+  font-size: 1.25rem;
 }
 
 img {
@@ -136,7 +141,7 @@ img {
   background-color: transparent;
   border: none;
   height: 100%;
-  font-size: 1.25rem;
+  font-size: 1rem;
   width: 100%;
   margin-left: 5px;
 }

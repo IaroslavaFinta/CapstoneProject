@@ -43,8 +43,8 @@ export default function AllProducts() {
             return (
               <li key={product.id} className="product">
                 <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>{product.price}</p>
+                <p>Price: ${product.price}</p>
+                <p>Category: {product.category_name}</p>
                 <button onClick={() => navigate(`/products/${product.id}`)}>
                   View Product
                 </button>

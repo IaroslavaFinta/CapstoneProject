@@ -287,7 +287,7 @@ app.post("/api/users/:id/products", isLoggedIn, isAdmin, async (req, res, next) 
       price: req.body.price,
       description: req.body.description,
       inventory: req.body.inventory,
-      category_id: req.body.category_id
+      category_name: req.body.category_name
     }));
   } catch (ex) {
     next(ex);
@@ -308,7 +308,7 @@ app.put("/api/users/:id/products/:productId", isLoggedIn, isAdmin, async (req, r
       price: req.body.price,
       description: req.body.description,
       inventory: req.body.inventory,
-      category_id: req.body.category_id
+      category_name: req.body.category_name
     }));
   } catch (ex) {
     next(ex);
@@ -349,8 +349,8 @@ const init = async () => {
   console.log("connected to database");
   await createTables();
   console.log("tables created");
-  const [clothes, accessories, books] = await Promise.all([
-    createCategory({ name: "clothes" }),
+  const [cages, accessories, books] = await Promise.all([
+    createCategory({ name: "cages" }),
     createCategory({ name: "accessories" }),
     createCategory({ name: "books" }),
   ]);
@@ -358,111 +358,106 @@ const init = async () => {
     createUser({ email: "jack@gmail.com", password: "mooo", is_admin: true}),
     createUser({ email: "lily@gmail.com", password: "rufruf"}),
     createUser({ email: "mark@gmail.com", password: "barkbark"}),
+  ]);
+  const [gallon, tank, cave] = await Promise.all([
     createProduct({
-      name: "Magician Robe Hooded Cape",
-      price: 23.99,
-      description: "very good cookie",
+      name: "67 Gallon Reptile Large Terrarium",
+      price: 261.99,
+      description: "Made with high quality thick and extremely high hardness tempered glass base for more safety; Tough screen top provides ventilation and allows good uvb and infrared penetration.Sliding Door with Screen Ventilation. 48x18x18 ",
       inventory: 5,
-      category_id: clothes.id,
+      category_name: cages.name,
     }),
     createProduct({
-      name: "Harry Potter Men's Quidditch Seekert-Shirt",
-      price: 13.99,
-      description: "Standard Adult sizes and Fit that can be worn by women who prefer a looser boyfriend fit",
+      name: "67 Gallon Glass Terrarium Tank",
+      price: 298.99,
+      description: "Size of 67 Gallon Reptile Rainforest Terrarium :24x18x36. Tough screen top provides ventilation and allows uvb and infrared penetration. 10 inch Deep Base :Waterproof bottom makes this tank can be used as rainforest tank.Full Glass of the Terrarium:All sides are glass(except the mesh top cover),it will give your pet a warm room,front doors can open separately, easy to feed your pet and prevent escape.",
       inventory: 5,
-      category_id: clothes.id,
+      category_name: cages.name,
     }),
     createProduct({
-      name: "Magical Crewneck Sweatshirt Snake Graphic",
-      price: 18.99,
-      description: "This snake sweatshirt is made of cotton blend, soft, comfortable and you will feel comfortable",
+      name: "50 Gallon PVC Reptile Enclosure",
+      price: 268.99,
+      description: "Featuring a transparent tempered glass sliding door with a safety lock. Dimensions 36x18x18 ",
       inventory: 5,
-      category_id: clothes.id,
+      category_name: cages.name,
     }),
-    createProduct({
-      name: "Harry Potter Slytherin House Crew Socks 2 Pair Pack",
-      price: 11.99,
-      description: "Fits shoe size 6-12. 70% Polyester, 20% Nylon, 10% Spandex. Includes 2 Pairs (1 pair of each design).",
-      inventory: 5,
-      category_id: clothes.id,
-    }),
-    createProduct({
-      name: "Necklace Wizardry Horcrux Hourglass",
-      price: 25.99,
-      description: "This Necklace is centered with a working miniature hourglass and its inner rings rotate. This Necklace is comfortable to wear for all occasions and the chain has a standard length of 18 inches.",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Slytherin Glitter Cup with Straw, 20 oz Green",
-      price: 13.99,
-      description: "Spoontiques acrylic tumblers feature double-wall insulation to remain at the correct temperature. Features a stainless-steel twist lid and a reusable coordinating straw. ",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Cinereplicas Women's Open-Back Slipper",
-      price: 16,
-      description: "Slippers are ultra-comfy and soft. Have been developed under strict adherence to the Warner Bros license.",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Harry Potter Playing Cards",
-      price: 12.89,
-      description: "Harry Potter playing cards are the perfect tribute to the wizarding world; From the philosopher's stone to the deathly hallows: track and experience history and its iconic moments every time you hold it in your hands",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Harry Potter Faux Leather Mini Backpack",
-      price: 41.99,
-      description: "Mini backpack is made of vegan leather (polyurethane), has a front zipper compartment, side pockets, and adjustable back straps. Inside, the backpack continues the theme with unique, coordinating lining",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Harry Potter Color Changing Slytherin Candle, Large 10 oz",
-      price: 23.99,
-      description: "This large 10oz hand-poured candle is filled with the finest ingredients of soy and coco wax and features a double wick, which provides an even, clean 45-hour burn. Glass/Wax. 10 oz. Measures: 3.25 x 4.25 inches",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Spellbinding Wand with Collectible Spell Card",
-      price: 14.99,
-      description: "Measuring at an impressive 13.8 inches in length, this sorcerer's wand includes a storage bag and a spell guide book,",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "LEGO Harry Potter Dobby The House-Elf Building Toy Set",
-      price: 27.99,
-      description: "403-piece building set. A buildable figure measures over 7.5 in. high, 5 in. wide and 4 in. deep",
-      inventory: 5,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "The Noble Collection Harry Potter Marauders Wand Set with Display Stand",
-      price: 153.99,
-      description: "4 Wizard Wands with Marauders Map Display Stand",
-      inventory: 3,
-      category_id: accessories.id,
-    }),
-    createProduct({
-      name: "Harry Potter Paperback Box Set (Books 1-7)",
-      price: 84.99,
-      description: "It's time to pass the magic on – with brand new editions of the classic and internationally bestselling series.",
-      inventory: 5,
-      category_id: books.id,
-    }),
-    createProduct({
-      name: "The Baking Book: 40+ Recipes Inspired by the Films ",
-      price: 11.99,
-      description: "Delight in 43 tasty recipes inspired by the Harry Potter films! From Pumpkin Patch Pies to Owl Muffins, Luna's Spectrespecs Cookies to Hogwarts Gingerbread, The Official Harry Potter Baking Cookbook is packed with mouthwatering recipes ",
-      inventory: 5,
-      category_id: books.id,
-    }),
+    // createProduct({
+    //   name: "2PCS Reptile Box Transparent",
+    //   price: 21.99,
+    //   description: "You will get 2 Transparent Reptile Boxes (size:12.6x8.6x5.9 inches). Made of high-quality plastic material, good transparency, sturdiness and durability, reusable, easy to clean and easy to take care of, portable and light, suitable for pet hatching, small pet breeding box, temporary breeding or outdoor transportation and carrying.",
+    //   inventory: 5,
+    //   category_name: cages.name,
+    // }),
+    // createProduct({
+    //   name: "20 Gallon Reptile Glass Terrarium",
+    //   price: 143.99,
+    //   description: "Dual sliding mesh top cover is for easy opening and closing.The metal screen top covers includes specially designed feeding holes that are designed to be functional and also visually appealing. Comes with a waterproof PVC tray for holding water and substrate, easy to clean.",
+    //   inventory: 5,
+    //   category_name: cages.name,
+    // }),
+    // createProduct({
+    //   name: "34 Gallon Large Reptile Glass Terrarium ",
+    //   price: 167.99,
+    //   description: "Tough screen top provides ventilation and allows uvb and infrared penetration. Front doors can open separately,easy to feed your pet and prevent escape. Window ventilation on left and right, on top and right have closable inlets for wires and tubing",
+    //   inventory: 5,
+    //   category_name: cages.name,
+    // }),
+    // createProduct({
+    //   name: "Reptile Plants",
+    //   price: 16.99,
+    //   description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "Reptile Plants",
+    //   price: 16.99,
+    //   description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "Large Resin Reptile Tank Accessories Hideouts Cave",
+    //   price: 25.99,
+    //   description: "Natural hiding, shedding and egg-laying environment for reptiles. Very stable, not easily tipped over by larger reptiles. The size is 7.6 x 7.2 x 6.1 inches.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "2-Pack Mini Hygrometer Thermometer",
+    //   price: 9.99,
+    //   description: "2-Fahrenheit (°F) or Celsius (°C) conversion, Temperature accuracy +/-1°C(+/-2°F), Humidity accuracy +/-5%RH. Dimensions 0.6W x 1.7H.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "Reptile Terrarium Cabinet",
+    //   price: 279.99,
+    //   description: "Moisture-resistant material on the surface, wear-resistant and durable. Flat packed for convenience and easy to assemble with sturdy and durable construction. 36Wx18Dx30H.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "Snake Climbing Branch,",
+    //   price: 23.99,
+    //   description: "2 reptile tree branches made of natural grape wood with untreated surface. Dimensions 13.78D x 1.2W x 1.2H.",
+    //   inventory: 5,
+    //   category_name: accessories.name,
+    // }),
+    // createProduct({
+    //   name: "Snake: The Essential Visual Guide",
+    //   price: 12.99,
+    //   description: "Find out about snakes from all over the world in this best-selling visual guide, with information about snake evolution, habitats, reproductive behavior, feeding, defense, and much more.",
+    //   inventory: 5,
+    //   category_name: books.name,
+    // }),
+    // createProduct({
+    //   name: "National Geographic Readers: Snakes!",
+    //   price: 7.99,
+    //   description: "Cool photos and fun facts slip us inside their surprising world.",
+    //   inventory: 5,
+    //   category_name: books.name,
+    // }),
   ]);
   const users = await seeUsers();
   console.log("Users: ", users);
@@ -477,35 +472,35 @@ const init = async () => {
   ]);
   const carts = await seeCarts();
   console.log("Carts: ", carts);
-  const productsInCart = await Promise.all([
-    createCartProduct({
-      cart_id: jackCart.id,
-      product_id: HarryPotterPlayingCards.id,
-      quantity: 2,
-    }),
-    createCartProduct({
-      cart_id: jackCart.id,
-      product_id: pasta.id,
-      quantity: 1,
-    }),
-    createCartProduct({
-      cart_id: lilyCart.id,
-      product_id: coke.id,
-      quantity: 2,
-    }),
-    createCartProduct({
-      cart_id: lilyCart.id,
-      product_id: pasta.id,
-      quantity: 4,
-    }),
-    createCartProduct({
-      cart_id: markCart.id,
-      product_id: coke.id,
-      quantity: 4,
-    }),
-  ]);
+  // const productsInCart = await Promise.all([
+  //   createCartProduct({
+  //     cart_id: jackCart.id,
+  //     product_id: HarryPotterPlayingCards.id,
+  //     quantity: 2,
+  //   }),
+  //   createCartProduct({
+  //     cart_id: jackCart.id,
+  //     product_id: pasta.id,
+  //     quantity: 1,
+  //   }),
+  //   createCartProduct({
+  //     cart_id: lilyCart.id,
+  //     product_id: coke.id,
+  //     quantity: 2,
+  //   }),
+  //   createCartProduct({
+  //     cart_id: lilyCart.id,
+  //     product_id: pasta.id,
+  //     quantity: 4,
+  //   }),
+  //   createCartProduct({
+  //     cart_id: markCart.id,
+  //     product_id: coke.id,
+  //     quantity: 4,
+  //   }),
+  // ]);
 
-  console.log("ProductsInCart:", productsInCart);
+  // console.log("ProductsInCart:", productsInCart);
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`listening on port ${port}`));

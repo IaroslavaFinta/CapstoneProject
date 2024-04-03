@@ -28,8 +28,8 @@ export default function SingleProduct() {
     <>
       <div className="singleProduct">
         <h1>{productDetails.name}</h1>
-        <h2>{productDetails.description}</h2>
-        <p>{productDetails.price}</p>
+        <h2>Description: {productDetails.description}</h2>
+        <p>Price: {productDetails.price}</p>
         <button onClick={() => navigate(-1)}>Go Back</button>
       </div>
     </>

@@ -33,17 +33,17 @@ const createTables = async () => {
   );
   CREATE TABLE categories(
     id UUID PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name TEXT UNIQUE NOT NULL
   );
   CREATE TABLE products(
     id UUID PRIMARY KEY,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) UNIQUE NOT NULL,
     price NUMERIC NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
     inventory INTEGER,
-    category_id UUID REFERENCES categories(id) NOT NULL
+    category_name TEXT REFERENCES categories(name) NOT NULL
   );
   CREATE TABLE carts(
     id UUID PRIMARY KEY,
@@ -52,9 +52,9 @@ const createTables = async () => {
   CREATE TABLE cart_products(
     id UUID PRIMARY KEY,
     cart_id UUID REFERENCES carts(id) NOT NULL,
-    product_id UUID REFERENCES products(id) NOT NULL,
+    product_name TEXT REFERENCES products(name) NOT NULL,
     quantity INTEGER NOT NULL,
-    CONSTRAINT unique_cart_product UNIQUE (cart_id, product_id)
+    CONSTRAINT unique_cart_product UNIQUE (cart_id, product_name)
   );
   `;
   await client.query(SQL);
@@ -71,13 +71,13 @@ const seeCategories = async () => {
 };
 
 // products in one category
-const seeCategoryProducts = async (category_id) => {
+const seeCategoryProducts = async (category_name) => {
   const SQL = `
     SELECT *
     FROM products
-    WHERE category_id=$1
+    WHERE category_name=$1
   `;
-  const response = await client.query(SQL, [category_id]);
+  const response = await client.query(SQL, [category_name]);
   return response.rows[0];
 };
 
@@ -268,10 +268,10 @@ const createProduct = async ({
   price,
   description,
   inventory,
-  category_id,
+  category_name,
 }) => {
   const SQL = `
-    INSERT INTO products(id, name, price, description, inventory, category_id)
+    INSERT INTO products(id, name, price, description, inventory, category_name)
     VALUES($1, $2, $3, $4, $5, $6)
     RETURNING *
   `;
@@ -281,20 +281,20 @@ const createProduct = async ({
     price,
     description,
     inventory,
-    category_id,
+    category_name,
   ]);
   return response.rows[0];
 };
 
-const updateProduct = async ({ name, price, description, inventory, category_id }) => {
+const updateProduct = async ({ name, price, description, inventory, category_name }) => {
   const SQL = `
     UPDATE products
-    SET name =$1 price=$2, description=$3, inventory=$4, category_id=$5, updated_at= now()
+    SET name =$1 price=$2, description=$3, inventory=$4, category_name=$5, updated_at= now()
     WHERE id = $6
     RETURNING *
   `;
   const response = await client.query(SQL, [
-    { name, price, description, inventory, category_id },
+    { name, price, description, inventory, category_name },
   ]);
   return response.rows[0];
 };

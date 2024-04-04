@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL } from "../main";
 import { useNavigate } from "react-router-dom";
+import AllCategories from "./AllCategories";
 
 export default function AllProducts() {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ export default function AllProducts() {
 
   return (
     <>
+      <div>
+        <AllCategories />
+      </div>
       <div className="search-bar">
         <div className="input-wrapper">
           <input
@@ -44,7 +48,6 @@ export default function AllProducts() {
               <li key={product.id} className="product">
                 <h3>{product.name}</h3>
                 <p>Price: ${product.price}</p>
-                <p>Category: {product.category_name}</p>
                 <button onClick={() => navigate(`/products/${product.id}`)}>
                   View Product
                 </button>

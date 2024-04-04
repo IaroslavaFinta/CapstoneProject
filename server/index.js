@@ -287,7 +287,7 @@ app.post("/api/users/:id/products", isLoggedIn, isAdmin, async (req, res, next) 
       price: req.body.price,
       description: req.body.description,
       inventory: req.body.inventory,
-      category_name: req.body.category_name
+      category_id: req.body.category_id
     }));
   } catch (ex) {
     next(ex);
@@ -308,7 +308,7 @@ app.put("/api/users/:id/products/:productId", isLoggedIn, isAdmin, async (req, r
       price: req.body.price,
       description: req.body.description,
       inventory: req.body.inventory,
-      category_name: req.body.category_name
+      category_id: req.body.category_id
     }));
   } catch (ex) {
     next(ex);
@@ -359,105 +359,119 @@ const init = async () => {
     createUser({ email: "lily@gmail.com", password: "rufruf"}),
     createUser({ email: "mark@gmail.com", password: "barkbark"}),
   ]);
-  const [gallon, tank, cave] = await Promise.all([
+  const productsDisplay = await Promise.all([
     createProduct({
       name: "67 Gallon Reptile Large Terrarium",
       price: 261.99,
       description: "Made with high quality thick and extremely high hardness tempered glass base for more safety; Tough screen top provides ventilation and allows good uvb and infrared penetration.Sliding Door with Screen Ventilation. 48x18x18 ",
       inventory: 5,
-      category_name: cages.name,
+      category_name: cages.id,
     }),
     createProduct({
-      name: "67 Gallon Glass Terrarium Tank",
+      name: "67 Gallon Glass Terrarium Tall Tank",
       price: 298.99,
       description: "Size of 67 Gallon Reptile Rainforest Terrarium :24x18x36. Tough screen top provides ventilation and allows uvb and infrared penetration. 10 inch Deep Base :Waterproof bottom makes this tank can be used as rainforest tank.Full Glass of the Terrarium:All sides are glass(except the mesh top cover),it will give your pet a warm room,front doors can open separately, easy to feed your pet and prevent escape.",
       inventory: 5,
-      category_name: cages.name,
+      category_name: cages.id,
     }),
     createProduct({
       name: "50 Gallon PVC Reptile Enclosure",
       price: 268.99,
       description: "Featuring a transparent tempered glass sliding door with a safety lock. Dimensions 36x18x18 ",
       inventory: 5,
-      category_name: cages.name,
+      category_name: cages.id,
     }),
-    // createProduct({
-    //   name: "2PCS Reptile Box Transparent",
-    //   price: 21.99,
-    //   description: "You will get 2 Transparent Reptile Boxes (size:12.6x8.6x5.9 inches). Made of high-quality plastic material, good transparency, sturdiness and durability, reusable, easy to clean and easy to take care of, portable and light, suitable for pet hatching, small pet breeding box, temporary breeding or outdoor transportation and carrying.",
-    //   inventory: 5,
-    //   category_name: cages.name,
-    // }),
-    // createProduct({
-    //   name: "20 Gallon Reptile Glass Terrarium",
-    //   price: 143.99,
-    //   description: "Dual sliding mesh top cover is for easy opening and closing.The metal screen top covers includes specially designed feeding holes that are designed to be functional and also visually appealing. Comes with a waterproof PVC tray for holding water and substrate, easy to clean.",
-    //   inventory: 5,
-    //   category_name: cages.name,
-    // }),
-    // createProduct({
-    //   name: "34 Gallon Large Reptile Glass Terrarium ",
-    //   price: 167.99,
-    //   description: "Tough screen top provides ventilation and allows uvb and infrared penetration. Front doors can open separately,easy to feed your pet and prevent escape. Window ventilation on left and right, on top and right have closable inlets for wires and tubing",
-    //   inventory: 5,
-    //   category_name: cages.name,
-    // }),
-    // createProduct({
-    //   name: "Reptile Plants",
-    //   price: 16.99,
-    //   description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "Reptile Plants",
-    //   price: 16.99,
-    //   description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "Large Resin Reptile Tank Accessories Hideouts Cave",
-    //   price: 25.99,
-    //   description: "Natural hiding, shedding and egg-laying environment for reptiles. Very stable, not easily tipped over by larger reptiles. The size is 7.6 x 7.2 x 6.1 inches.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "2-Pack Mini Hygrometer Thermometer",
-    //   price: 9.99,
-    //   description: "2-Fahrenheit (°F) or Celsius (°C) conversion, Temperature accuracy +/-1°C(+/-2°F), Humidity accuracy +/-5%RH. Dimensions 0.6W x 1.7H.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "Reptile Terrarium Cabinet",
-    //   price: 279.99,
-    //   description: "Moisture-resistant material on the surface, wear-resistant and durable. Flat packed for convenience and easy to assemble with sturdy and durable construction. 36Wx18Dx30H.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "Snake Climbing Branch,",
-    //   price: 23.99,
-    //   description: "2 reptile tree branches made of natural grape wood with untreated surface. Dimensions 13.78D x 1.2W x 1.2H.",
-    //   inventory: 5,
-    //   category_name: accessories.name,
-    // }),
-    // createProduct({
-    //   name: "Snake: The Essential Visual Guide",
-    //   price: 12.99,
-    //   description: "Find out about snakes from all over the world in this best-selling visual guide, with information about snake evolution, habitats, reproductive behavior, feeding, defense, and much more.",
-    //   inventory: 5,
-    //   category_name: books.name,
-    // }),
-    // createProduct({
-    //   name: "National Geographic Readers: Snakes!",
-    //   price: 7.99,
-    //   description: "Cool photos and fun facts slip us inside their surprising world.",
-    //   inventory: 5,
-    //   category_name: books.name,
-    // }),
+    createProduct({
+      name: "2PCS Reptile Box Transparent",
+      price: 21.99,
+      description: "You will get 2 Transparent Reptile Boxes (size:12.6x8.6x5.9 inches). Made of high-quality plastic material, good transparency, sturdiness and durability, reusable, easy to clean and easy to take care of, portable and light, suitable for pet hatching, small pet breeding box, temporary breeding or outdoor transportation and carrying.",
+      inventory: 5,
+      category_name: cages.id,
+    }),
+    createProduct({
+      name: "20 Gallon Reptile Glass Terrarium",
+      price: 143.99,
+      description: "Dual sliding mesh top cover is for easy opening and closing.The metal screen top covers includes specially designed feeding holes that are designed to be functional and also visually appealing. Comes with a waterproof PVC tray for holding water and substrate, easy to clean.",
+      inventory: 5,
+      category_name: cages.id,
+    }),
+    createProduct({
+      name: "34 Gallon Large Reptile Glass Terrarium ",
+      price: 167.99,
+      description: "Tough screen top provides ventilation and allows uvb and infrared penetration. Front doors can open separately,easy to feed your pet and prevent escape. Window ventilation on left and right, on top and right have closable inlets for wires and tubing",
+      inventory: 5,
+      category_name: cages.id,
+    }),
+    createProduct({
+      name: "Reptile Plants",
+      price: 16.99,
+      description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "Reptile Plants",
+      price: 16.99,
+      description: "Reptile Terrarium Decorations include: 1 x Flexible Bendable Reptile Plant Leaves, 1 x Jungle Vine with leaves, 1 x large Plastic Hanging Leaves vine, 2 x mini Hanging Ivy Plants ( 2 style ), 6 x suction cups. Perfect for reptile habitat decorations, terrarium hanging, snake terrarium decorations.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "Large Resin Reptile Tank Accessories Hideouts Cave",
+      price: 25.99,
+      description: "Natural hiding, shedding and egg-laying environment for reptiles. Very stable, not easily tipped over by larger reptiles. The size is 7.6 x 7.2 x 6.1 inches.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "2-Pack Mini Hygrometer Thermometer",
+      price: 9.99,
+      description: "2-Fahrenheit (°F) or Celsius (°C) conversion, Temperature accuracy +/-1°C(+/-2°F), Humidity accuracy +/-5%RH. Dimensions 0.6W x 1.7H.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "Reptile Terrarium Cabinet",
+      price: 279.99,
+      description: "Moisture-resistant material on the surface, wear-resistant and durable. Flat packed for convenience and easy to assemble with sturdy and durable construction. 36Wx18Dx30H.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "Snake Climbing Branch,",
+      price: 23.99,
+      description: "2 reptile tree branches made of natural grape wood with untreated surface. Dimensions 13.78D x 1.2W x 1.2H.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "44 inch Snake Hook,",
+      price: 29.99,
+      description: "Snake Catcher hook Tong is made of Carbon material with polished finish. Lightweight, Strong and Durable. Ideal for handling snakes.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "2pcs Snake Feeding Tongs,",
+      price: 13.99,
+      description: "The snake grabber tool is made of high quality stainless steel. You will receive a double-head package combination of one straight head + one curved head, which is enough to adapt to a variety of scenarios and critters.",
+      inventory: 5,
+      category_name: accessories.id,
+    }),
+    createProduct({
+      name: "Snake: The Essential Visual Guide",
+      price: 12.99,
+      description: "Find out about snakes from all over the world in this best-selling visual guide, with information about snake evolution, habitats, reproductive behavior, feeding, defense, and much more.",
+      inventory: 5,
+      category_name: books.id,
+    }),
+    createProduct({
+      name: "National Geographic Readers: Snakes!",
+      price: 7.99,
+      description: "Cool photos and fun facts slip us inside their surprising world.",
+      inventory: 5,
+      category_name: books.id,
+    }),
   ]);
   const users = await seeUsers();
   console.log("Users: ", users);

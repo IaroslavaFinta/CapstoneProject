@@ -13,13 +13,12 @@ import UserSettings from "./components/UserSettings";
 
 function App() {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
 
   return (
     <>
       <h1 className="logo">
-        <img id="logo-image"
-        src=""
-        alt="terrarium store logo" />
+        <img id="logo-image" src="" alt="terrarium store logo" />
         Terrarium
       </h1>
       <div id="container">
@@ -30,14 +29,31 @@ function App() {
             <Route path="/account" element={<Account token={token} />} />
             <Route
               path="/register"
-              element={<Register token={token} setToken={setToken} />}
+              element={
+                <Register
+                  user={user}
+                  setUser={setUser}
+                  token={token}
+                  setToken={setToken}
+                />
+              }
             />
             <Route
               path="/login"
-              element={<Login token={token} setToken={setToken} />}
+              element={
+                <Login
+                  user={user}
+                  setUser={setUser}
+                  token={token}
+                  setToken={setToken}
+                />
+              }
             />
             <Route path="/products" element={<AllProducts />} />
-            <Route path="/products/:id" element={<SingleProduct token={token}/>} />
+            <Route
+              path="/products/:id"
+              element={<SingleProduct token={token} />}
+            />
             <Route path="/categories/:name" element={<SingleCategory />} />
             <Route path="/myCart" element={<MyCart token={token} />} />
             <Route

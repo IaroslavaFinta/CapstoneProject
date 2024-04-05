@@ -25,7 +25,7 @@ export default function SingleProduct({ token }) {
     getSingleProduct();
   }, []);
 
-  // loggen in user can add item to cart
+  // logged in user can add item to cart
   async function handleClick() {
     try {
       const response = await fetch(`${API_URL}/users/${id}/cart/cartProducts`, {
@@ -52,7 +52,7 @@ export default function SingleProduct({ token }) {
         {token ? (
           <button onClick={()=>{handleClick()}}>Add Product</button>
         ) : (
-          <p>This item is available for purchase, please log in</p>
+          <p>Item is available for purchase, please log in</p>
         )}
         <button onClick={() => navigate(-1)}>Go Back</button>
       </div>

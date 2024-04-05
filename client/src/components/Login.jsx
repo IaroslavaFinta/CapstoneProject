@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { API_URL } from "../main";
 
-export default function Login({token, setToken}) {
+export default function Login({ user, setUser, token, setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
@@ -42,6 +42,7 @@ export default function Login({token, setToken}) {
       if (response.ok) {
         window.localStorage.setItem("token", result.token);
         attemptLoginWithToken();
+        setUser(`${email}`);
         setSuccessMessage("Login success");
       } else {
         setError("Failed to login");
@@ -61,7 +62,8 @@ export default function Login({token, setToken}) {
     <>
       {!token ?
       (
-        <form className="form"
+        <div>
+          <form className="form"
         onSubmit={submit}>
           <label htmlFor={"email"} className="email">
           Email address:{" "}
@@ -83,9 +85,12 @@ export default function Login({token, setToken}) {
           </label>
           <button disabled={!email || !password}>Login</button>
         </form>
+        <p>Don't have an account yet?</p>
+        <button onClick={() => navigate("/register")}>Sign Up</button>
+        </div>
       ) : (
         <div>
-          <h1>Logged in as {email}</h1>
+          <h1>Logged in as {user}</h1>
           <button onClick={logout}>Logout</button>
         </div>
       )}

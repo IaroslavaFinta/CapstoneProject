@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
-export default function Register({ token, setToken }) {
+export default function Register({ user, setUser, token, setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
@@ -28,6 +28,7 @@ export default function Register({ token, setToken }) {
         window.localStorage.setItem("token", result.token);
         setSuccessMessage("Registered");
         setToken(result.token);
+        setUser(email);
         console.log(result);
       } else {
         setError("Failed to register");
@@ -41,7 +42,7 @@ export default function Register({ token, setToken }) {
   return (
     <>
       {token ? (
-        <h1>Logged in as {email}</h1>
+        <h1>Logged in as {user}</h1>
       ) : (
         <div className="login">
           <h1>Register</h1>

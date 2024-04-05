@@ -30,6 +30,41 @@ export default function MyCart({ token }) {
     getCartItems();
   }, []);
 
+  async function changeQuantity() {
+    try {
+      const response = await fetch(`${API_URL}/users/${id}/cart/cartProducts`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(),
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteItem() {
+    try {
+      const response = await fetch(`${API_URL}/api/users/${id}/cart/cartProducts/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error("Item could not be deleted.");
+      }
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <div className="cartItems">
@@ -53,6 +88,8 @@ export default function MyCart({ token }) {
                         <td>{cartItem.name}</td>
                         <td>{cartItem.price}</td>
                         <td>{cartItem.quantity}</td>
+                        <button onClick={() => {changeQuantity()}}>Increase</button>
+                        <button onClick={() => {deleteItem()}}>Remove Item</button>
                       </tr>
                     );
                   })}

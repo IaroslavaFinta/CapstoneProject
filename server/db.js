@@ -212,12 +212,22 @@ const changeQuantity = async ({ cart_id, product_id, quantity }) => {
   return response.rows[0];
 };
 
+const seeUser = async (id) => {
+  const SQL = `
+    SELECT id, email, firstName, lastName, phone_number
+    FROM users
+    WHERE id=$1
+  `;
+  const response = await client.query(SQL, [id]);
+  return response.rows[0];
+};
+
 const updateUser = async ({ firstName, lastName, phone_number, id }) => {
   const SQL = `
     UPDATE users
     SET firstName=$1, lastName=$2, phone_number=$3, updated_at=now()
     WHERE id=$4
-    RETURNING *
+    RETURNING email, firstName, lastName, phone_number
   `;
   const response = await client.query(SQL, [
     firstName,
@@ -239,7 +249,7 @@ const deleteUser = async (id) => {
 // admin
 const seeUsers = async () => {
   const SQL = `
-    SELECT email, firstName, lastName, phone_number, is_admin
+    SELECT id, email, firstName, lastName, phone_number, is_admin
     FROM users
   `;
   const response = await client.query(SQL);
@@ -379,6 +389,7 @@ module.exports = {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  seeUser,
   updateUser,
   deleteUser,
   seeUsers,

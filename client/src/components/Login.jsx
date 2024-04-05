@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { API_URL } from "../main";
 
-export default function Login() {
+export default function Login({token, setToken}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [auth, setAuth] = useState({});
   const [successMessage, setSuccessMessage] = useState(null);
   const [error, setError] = useState(null);
 
@@ -23,7 +22,7 @@ export default function Login() {
       });
       const result = await response.json();
       if (response.ok) {
-        setAuth(result);
+        setToken(result);
       } else {
         window.localStorage.removeItem("token");
       }
@@ -31,32 +30,36 @@ export default function Login() {
   };
 
   const login = async (credentials) => {
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       body: JSON.stringify(credentials),
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    const result = await response.json();
-    if (response.ok) {
-      window.localStorage.setItem("token", result.token);
-      attemptLoginWithToken();
-      setSuccessMessage("Login success");
-    } else {
-      setError("Failed to login");
-      console.log(result);
+      });
+      const result = await response.json();
+      if (response.ok) {
+        window.localStorage.setItem("token", result.token);
+        attemptLoginWithToken();
+        setSuccessMessage("Login success");
+      } else {
+        setError("Failed to login");
+        console.log(result);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const logout = () => {
     window.localStorage.removeItem("token");
-    setAuth({});
+    setToken({});
   };
 
   return (
     <>
-      {!auth.id ?
+      {!token ?
       (
         <form className="form"
         onSubmit={submit}>

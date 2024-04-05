@@ -14,6 +14,7 @@ const {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  seeUser,
   updateUser,
   deleteUser,
   seeUsers,
@@ -221,6 +222,20 @@ app.delete("/api/users/:id/cart/cartProducts/:cartProductId", isLoggedIn, async 
 );
 
 // login user to purchase products
+
+//  login user to see information about user
+app.get("/api/users/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.params.id !== req.user.id) {
+      const error = Error("not authorized");
+      error.status = 401;
+      throw error;
+    }
+    res.status(201).send(await seeUser(req.params.id));
+  } catch (ex) {
+    next(ex);
+  }
+});
 
 //  login user to update information about user
 app.put("/api/users/:id", isLoggedIn, async (req, res, next) => {
@@ -497,7 +512,6 @@ const init = async () => {
       quantity: 1,
     }),
   ]);
-
   console.log("ProductsInCart:", productsInCart);
 
   const port = process.env.PORT || 3000;

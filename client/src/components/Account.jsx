@@ -2,66 +2,61 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
-export default function Account() {
+export default function Account({ token }) {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
   let { id } = useParams();
+  const [userData, setUserData] = useState([]);
 
-  const getCartItems = async () => {
+  useEffect(() => {
+    const getUserData = async () => {
+      const response = await fetch(`${API_URL}/api/users/${id}`);
+      const json = await response.json();
+      setUserData(json);
+    };
+    getUserData();
+  }, []);
+
+  async function deleteUser() {
     try {
-      const response = await fetch(
-        `${API_URL}/api/users/${id}/cart/cartProducts`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/api/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const result = await response.json();
-      setCartItems(result);
+      if (!response.ok) {
+        throw new Error("User could not be deleted.");
+      }
+      return result;
     } catch (error) {
       console.log(error);
     }
-  };
-
-  useEffect(() => {
-    getCartItems();
-  }, []);
+  }
 
   return (
     <>
-      <div className="cartItems">
+      <div className="account">
         <h1>Account</h1>
-        <div className="cartItems-display">
           {token ? (
-            // if token is valid display cartItems
-            cartItems.length > 0 ? (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((cartItem) => {
+            // if token is valid display MyCart button, settings button, delete user button
+            <>
+              <ul className="user">
+                {userData.map((user) => {
                     return (
-                      <tr key={cartItem.id}>
-                        <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
-                        <td>{cartItem.quantity}</td>
-                      </tr>
+                      <li key={user.id}>
+                        <h3>Email: {user.email}</h3>
+                        <h3>First Name: {user.firstName}</h3>
+                        <h3>Last Name: {user.lastName}</h3>
+                        <h3>Phone number: {user.phone_number}</h3>
+                      </li>
                     );
                   })}
-                </tbody>
-                <button>Checkout</button>
-              </table>
-            ) : (
-              // if no items in cart display text
-              <p>Cart is currently empty</p>
-            )
+              </ul>
+              <button onClick={() => navigate("/myCart")}>MyCart</button>
+              <button onClick={() => navigate("/UserSettings")}>User Settings</button>
+              <button onClick={() => {deleteUser()}}>Delete User</button>
+            </>
           ) : (
             // if token is not valid link to register or login
             <h3>
@@ -71,8 +66,8 @@ export default function Account() {
               <button onClick={() => navigate("/register")}>Register</button>
               to your account
             </h3>
-          )}
-        </div>
+          )
+        }
       </div>
     </>
   );

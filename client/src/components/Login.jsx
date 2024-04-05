@@ -18,7 +18,7 @@ export default function Login() {
     if (token) {
       const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
-          authorization: token,
+          authorization: `Bearer ${token}`,
         },
       });
       const result = await response.json();
@@ -81,7 +81,10 @@ export default function Login() {
           <button disabled={!email || !password}>Login</button>
         </form>
       ) : (
-        <button onClick={logout}>Logout</button>
+        <div>
+          <h1>Logged in as {email}</h1>
+          <button onClick={logout}>Logout</button>
+        </div>
       )}
     </>
   );

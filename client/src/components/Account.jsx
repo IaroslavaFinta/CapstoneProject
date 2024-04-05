@@ -1,65 +1,79 @@
-// import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import Reservations from "./Reservations";
-// import { API_URL } from "../main";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { API_URL } from "../main";
 
-export default function Account({ token }) {
-//   const navigate = useNavigate();
-//   const [reservations, setReservations] = useState([]);
+export default function Account() {
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
+  let { id } = useParams();
 
-//   const getReservations = async() => {
-//     try {
-//       const response = await fetch(`${API_URL}/reservations`, {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       const result = await response.json();
-//       setReservations(result.reservation);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+  const getCartItems = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/users/${id}/cart/cartProducts`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const result = await response.json();
+      setCartItems(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-//   useEffect(() => {
-//     getReservations();
-//   }, []);
+  useEffect(() => {
+    getCartItems();
+  }, []);
 
-//   return (
-//     <>
-//       <div className="reservations">
-//         <h1>Account</h1>
-//         <div className="reservations-display">
-//           {token ? (
-//             // if token is valid display reservations
-//             reservations.length > 0 ? (
-//               reservations.map((reservation) => {
-//                 return (
-//                   <Reservations
-//                     key={reservation.id}
-//                     reservation={reservation}
-//                     setReservations={setReservations}
-//                     token={token}
-//                   />
-//                 );
-//               })
-//             ) : (
-//                 // if no reservations display text
-//               <p>No books currently checked out</p>
-//             )
-//           ) : (
-//               // if token is not valid link to register or login
-//             <h3>
-//               Please log in
-//               <button onClick={() => navigate("/login")}>Login</button>
-//               or register
-//               <button onClick={() => navigate("/register")}>Register</button>
-//               to your account
-//             </h3>
-//           )}
-//         </div>
-//       </div>
-//     </>
-//   );
+  return (
+    <>
+      <div className="cartItems">
+        <h1>Account</h1>
+        <div className="cartItems-display">
+          {token ? (
+            // if token is valid display cartItems
+            cartItems.length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((cartItem) => {
+                    return (
+                      <tr key={cartItem.id}>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td>{cartItem.quantity}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <button>Checkout</button>
+              </table>
+            ) : (
+              // if no items in cart display text
+              <p>Cart is currently empty</p>
+            )
+          ) : (
+            // if token is not valid link to register or login
+            <h3>
+              Please log in
+              <button onClick={() => navigate("/login")}>Login</button>
+              or register
+              <button onClick={() => navigate("/register")}>Register</button>
+              to your account
+            </h3>
+          )}
+        </div>
+      </div>
+    </>
+  );
 }

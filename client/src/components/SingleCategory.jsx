@@ -34,6 +34,10 @@ export default function SingleCategory() {
               <li key={categoryDetail.id} className="product">
                 <h3>{categoryDetail.name}</h3>
                 <p>Price: ${categoryDetail.price}</p>
+                <button onClick={() => navigate(`/products/${categoryDetail.id}`)}>
+                  View Product
+                </button>
+                <button>Add Product</button>
               </li>
             );
           })}

@@ -49,9 +49,8 @@ const path = require('path');
 // middleware function call next with an error if the header named authorization does not have a valid token.
 // If there is a valid token, the req.user should be set to the user who's id is contained in the token
 const isLoggedIn = async (req, res, next) => {
-  // console.log(req.headers.authorization);
   try {
-    req.user = await findUserWithToken(req.headers.authorization);
+    req.user = await findUserWithToken(req.headers.authorization.split(" ")[1]);
     next();
   } catch (ex) {
     next(ex);
@@ -486,35 +485,20 @@ const init = async () => {
   ]);
   const carts = await seeCarts();
   console.log("Carts: ", carts);
-  // const productsInCart = await Promise.all([
-  //   createCartProduct({
-  //     cart_id: jackCart.id,
-  //     product_id: HarryPotterPlayingCards.id,
-  //     quantity: 2,
-  //   }),
-  //   createCartProduct({
-  //     cart_id: jackCart.id,
-  //     product_id: pasta.id,
-  //     quantity: 1,
-  //   }),
-  //   createCartProduct({
-  //     cart_id: lilyCart.id,
-  //     product_id: coke.id,
-  //     quantity: 2,
-  //   }),
-  //   createCartProduct({
-  //     cart_id: lilyCart.id,
-  //     product_id: pasta.id,
-  //     quantity: 4,
-  //   }),
-  //   createCartProduct({
-  //     cart_id: markCart.id,
-  //     product_id: coke.id,
-  //     quantity: 4,
-  //   }),
-  // ]);
+  const productsInCart = await Promise.all([
+    createCartProduct({
+      cart_id: jackCart.id,
+      product_id: productsDisplay[0].id,
+      quantity: 2,
+    }),
+    createCartProduct({
+      cart_id: jackCart.id,
+      product_id: productsDisplay[1].id,
+      quantity: 1,
+    }),
+  ]);
 
-  // console.log("ProductsInCart:", productsInCart);
+  console.log("ProductsInCart:", productsInCart);
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`listening on port ${port}`));

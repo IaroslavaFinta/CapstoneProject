@@ -163,9 +163,11 @@ const createCartProduct = async ({ cart_id, product_id, quantity }) => {
 // view cart products
 const seeCartProducts = async (cart_id) => {
   const SQL = `
-      SELECT *
-      FROM cart_products
-      WHERE cart_id = $1
+      SELECT p.name, p.price, cp.quantity
+      FROM cart_products cp
+      INNER JOIN products p
+      ON p.id=cp.product_id
+      WHERE cp.cart_id = $1
     `;
   const response = await client.query(SQL, [cart_id]);
   return response.rows;

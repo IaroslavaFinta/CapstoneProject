@@ -1,14 +1,13 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from "./components/Navigation";
 import Home from "./components/Home";
-import Account from "./components/Account";
+// import Account from "./components/Account";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
 import SingleCategory from './components/SingleCategory';
-// import AllCategories from './components/AllCategories';
+import Account from './components/Account';
 
 function App() {
 

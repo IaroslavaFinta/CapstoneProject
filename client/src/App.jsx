@@ -7,6 +7,8 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
+import SingleCategory from './components/SingleCategory';
+// import AllCategories from './components/AllCategories';
 
 function App() {
 
@@ -47,6 +49,10 @@ function App() {
             <Route
               path="/products/:id"
               element={<SingleProduct />}
+            />
+            <Route
+              path="/categories/:name"
+              element={<SingleCategory />}
             />
           </Routes>
         </div>

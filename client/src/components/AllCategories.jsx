@@ -23,7 +23,7 @@ export default function AllCategories() {
             return (
               <li key={category.id} className="category">
                 <h3>{category.name.toUpperCase()}</h3>
-                <button onClick={() => navigate(`/categories/${category.id}`)}>
+                <button onClick={() => navigate(`/categories/${category.name}`)}>
                   View Products
                 </button>
               </li>

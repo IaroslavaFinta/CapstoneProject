@@ -3,14 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
 export default function SingleCategory() {
-  const [categoryDetails, setCategoryDetails] = useState({});
+  const [categoryDetails, setCategoryDetails] = useState([]);
   const navigate = useNavigate();
-  let { id } = useParams();
+  let { name } = useParams();
 
   useEffect(() => {
     const getSingleCategory = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/categories/${id}`, {
+        const response = await fetch(`${API_URL}/api/categories/${name}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -27,17 +27,13 @@ export default function SingleCategory() {
   return (
     <>
       <div className="singleCategory">
-        {/* <h1>{categoryDetails.name}</h1> */}
+        <h1>{categoryDetails.name}</h1>
         <ul className="categoryProducts">
           {categoryDetails.map((categoryDetail) => {
             return (
               <li key={categoryDetail.id} className="product">
                 <h3>{categoryDetail.name}</h3>
                 <p>Price: ${categoryDetail.price}</p>
-                {/* <button onClick={() => navigate(`/products/${product.id}`)}>
-                  View Product
-                </button>
-                <button>Add Product</button> */}
               </li>
             );
           })}

@@ -51,7 +51,6 @@ export default function AllProducts() {
                 <button onClick={() => navigate(`/products/${product.id}`)}>
                   View Product
                 </button>
-                <button>Add Product</button>
               </li>
             );
           })}

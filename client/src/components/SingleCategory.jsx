@@ -37,7 +37,6 @@ export default function SingleCategory() {
                 <button onClick={() => navigate(`/products/${categoryDetail.id}`)}>
                   View Product
                 </button>
-                <button>Add Product</button>
               </li>
             );
           })}

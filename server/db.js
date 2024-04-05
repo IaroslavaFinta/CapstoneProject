@@ -163,7 +163,7 @@ const createCartProduct = async ({ cart_id, product_id, quantity }) => {
 // view cart products
 const seeCartProducts = async (cart_id) => {
   const SQL = `
-      SELECT p.name, p.price, cp.quantity
+      SELECT p.id, p.name, p.price, cp.quantity
       FROM cart_products cp
       INNER JOIN products p
       ON p.id=cp.product_id

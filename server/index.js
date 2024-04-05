@@ -186,7 +186,7 @@ app.post("/api/users/:id/cart/cartProducts", isLoggedIn, async (req, res, next) 
 });
 
 // login user to change quantity of product in cart
-app.put("/api/users/:id/cart/cartProducts/:cartProductId", isLoggedIn, async (req, res, next) => {
+app.put("/api/users/:id/cart/cartProducts", isLoggedIn, async (req, res, next) => {
   try {
     if (req.params.id !== req.user.id) {
       const error = Error("not authorized");
@@ -195,9 +195,9 @@ app.put("/api/users/:id/cart/cartProducts/:cartProductId", isLoggedIn, async (re
     }
     const cartId = await seeCart(req.params.id);
     res.send(await changeQuantity({
-      cart_id: cartId.id,
-      product_id: req.params.cartProductId,
       quantity: req.body.quantity,
+      product_id: req.body.product_id,
+      cart_id: cartId.id,
     }));
   } catch (ex) {
     next(ex);
@@ -301,7 +301,7 @@ app.post("/api/users/:id/products", isLoggedIn, isAdmin, async (req, res, next) 
       price: req.body.price,
       description: req.body.description,
       inventory: req.body.inventory,
-      category_name: req.body.category_id
+      category_name: req.body.category_name
     }));
   } catch (ex) {
     next(ex);

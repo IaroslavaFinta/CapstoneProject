@@ -9,7 +9,14 @@ export default function Account({ token }) {
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await fetch(`${API_URL}/api/users/${id}`);
+      const response = await fetch(`${API_URL}/api/users`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const json = await response.json();
       setUserData(json);
     };
@@ -18,9 +25,10 @@ export default function Account({ token }) {
 
   async function deleteUser() {
     try {
-      const response = await fetch(`${API_URL}/api/users/${id}`, {
+      const response = await fetch(`${API_URL}/api/users`, {
         method: "DELETE",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });

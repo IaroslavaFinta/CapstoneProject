@@ -10,7 +10,7 @@ export default function MyCart({ token }) {
   const getCartItems = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/api/users/${id}/cart/cartProducts`,
+        `${API_URL}/api/users/cart/cartProducts`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export default function MyCart({ token }) {
 
   async function changeQuantity() {
     try {
-      const response = await fetch(`${API_URL}/users/${id}/cart/cartProducts`, {
+      const response = await fetch(`${API_URL}/users//cart/cartProducts`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function MyCart({ token }) {
 
   async function deleteItem() {
     try {
-      const response = await fetch(`${API_URL}/api/users/${id}/cart/cartProducts/${id}`, {
+      const response = await fetch(`${API_URL}/api/users/cart/cartProducts/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

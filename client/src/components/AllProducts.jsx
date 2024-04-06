@@ -47,6 +47,7 @@ export default function AllProducts() {
             return (
               <li key={product.id} className="product">
                 <h3>{product.name}</h3>
+                <img src={product.imageURL} alt="product image" />
                 <p>Price: ${product.price}</p>
                 <button onClick={() => navigate(`/products/${product.id}`)}>
                   View Product

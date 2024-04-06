@@ -40,6 +40,7 @@ const createTables = async () => {
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now(),
     name VARCHAR(100) NOT NULL,
+    imageURL TEXT,
     price NUMERIC NOT NULL,
     description TEXT NOT NULL,
     inventory INTEGER,
@@ -277,19 +278,21 @@ const createCategory = async ({ name }) => {
 
 const createProduct = async ({
   name,
+  imageURL,
   price,
   description,
   inventory,
   category_name,
 }) => {
   const SQL = `
-    INSERT INTO products(id, name, price, description, inventory, category_name)
-    VALUES($1, $2, $3, $4, $5, $6)
+    INSERT INTO products (id, name, imageURL, price, description, inventory, category_name)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
   `;
   const response = await client.query(SQL, [
     uuid.v4(),
     name,
+    imageURL,
     price,
     description,
     inventory,
@@ -298,15 +301,15 @@ const createProduct = async ({
   return response.rows[0];
 };
 
-const updateProduct = async ({ name, price, description, inventory, category_name }) => {
+const updateProduct = async ({ name, imageURL, price, description, inventory, category_name }) => {
   const SQL = `
     UPDATE products
-    SET name =$1 price=$2, description=$3, inventory=$4, category_name=$5, updated_at= now()
-    WHERE id = $6
+    SET name =$1 imageURL=$2 price=$3, description=$4, inventory=$5, category_name=$6, updated_at= now()
+    WHERE id = $7
     RETURNING *
   `;
   const response = await client.query(SQL, [
-    { name, price, description, inventory, category_name },
+    { name, imageURL, price, description, inventory, category_name },
   ]);
   return response.rows[0];
 };
@@ -351,15 +354,18 @@ const authenticate = async ({ email, password }) => {
 // use the id of verified token's payload
 // using the id as the parameter in your SQL statement
 const findUserWithToken = async (token) => {
+  console.log({token});
   let id;
   try {
     const payload = await jwt.verify(token, JWT);
     id = payload.id;
+    console.log(id);
   } catch (ex) {
     const error = Error("not authorized");
     error.status = 401;
     throw error;
   }
+  console.log(token);
   const SQL = `
     SELECT id, email, is_admin
     FROM users

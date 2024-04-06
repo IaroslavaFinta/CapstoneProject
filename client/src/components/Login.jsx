@@ -21,8 +21,9 @@ export default function Login({ user, setUser, token, setToken }) {
         },
       });
       const result = await response.json();
+      
       if (response.ok) {
-        setToken(result);
+        console.log(result);
       } else {
         window.localStorage.removeItem("token");
       }
@@ -41,6 +42,7 @@ export default function Login({ user, setUser, token, setToken }) {
       const result = await response.json();
       if (response.ok) {
         window.localStorage.setItem("token", result.token);
+        setToken(result.token);
         attemptLoginWithToken();
         setUser(`${email}`);
         setSuccessMessage("Login success");

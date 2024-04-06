@@ -51,11 +51,17 @@ ul{
   padding: 10px;
   margin: 10px;
   list-style-type: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
 }
 
 li {
   padding: 20px;
+}
+
+.category {
+  display: flex;
 }
 
 .form {
@@ -96,7 +102,7 @@ p {
 }
 
 img {
-  width: 200px;
+  width: 100px;
   height: auto;
 }
 

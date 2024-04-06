@@ -47,6 +47,7 @@ export default function SingleProduct({ token }) {
     <>
       <div className="singleProduct">
         <h1>{productDetails.name}</h1>
+        <img src={productDetails.imageURL} alt="product image" />
         <h2>Description: {productDetails.description}</h2>
         <p>Price: {productDetails.price}</p>
         {token ? (

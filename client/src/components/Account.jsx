@@ -55,9 +55,9 @@ export default function Account({ token }) {
               <ul className="user">
                   <li key={userData.id}>
                     <h3>Email: {userData.email}</h3>
-                    <h3>First Name: {userData.firstName}</h3>
-                    <h3>Last Name: {userData.lastName}</h3>
-                    <h3>Phone number: {userData.phone_number}</h3>
+                    <h3>First Name: {userData.firstname}</h3>
+                    <h3>Last Name: {userData.lastname}</h3>
+                    <h3>Phone number: {userData.phonenumber}</h3>
                   </li>
               </ul>
               <button onClick={() => navigate("/myCart")}>MyCart</button>

@@ -46,19 +46,18 @@ export default function MyCart({ token }) {
     }
   }
 
-  async function deleteItem() {
+  async function deleteItem(cartItemId) {
     try {
-      const response = await fetch(`${API_URL}/api/mycart/cartitems/${id}`, {
+      const response = await fetch(`${API_URL}/api/mycart/cartitems/${cartItemId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const result = await response.json();
       if (!response.ok) {
         throw new Error("Item could not be deleted.");
       }
-      return result;
+      await getCartItems();
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +87,7 @@ export default function MyCart({ token }) {
                         <td>{cartItem.quantity}</td>
                         <td>{cartItem.price}</td>
                         <button onClick={() => {changeQuantity()}}>Increase</button>
-                        <button onClick={() => {deleteItem()}}>Remove Item</button>
+                        <button onClick={() => {deleteItem(cartItem.id)}}>Remove Item</button>
                       </tr>
                     );
                   })}

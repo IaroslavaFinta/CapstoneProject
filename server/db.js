@@ -19,6 +19,8 @@ const createTables = async () => {
   DROP TABLE IF EXISTS users;
   DROP TABLE IF EXISTS products;
   DROP TABLE IF EXISTS categories;
+  DROP TABLE IF EXISTS orderDelivery;
+  DROP TABLE IF EXISTS orderPayment;
 
   CREATE TABLE users(
     id UUID PRIMARY KEY,
@@ -56,6 +58,20 @@ const createTables = async () => {
     product_id UUID REFERENCES products(id) NOT NULL,
     quantity INTEGER NOT NULL,
     CONSTRAINT unique_cart_product UNIQUE (cart_id, product_id)
+  );
+  CREATE TABLE orderDelivery(
+    id UUID PRIMARY KEY,
+    address VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    zipcode INTEGER NOT NULL
+  );
+  CREATE TABLE orderPayment(
+    id UUID PRIMARY KEY,
+    cardNumber VARCHAR(20) NOT NULL,
+    expDate VARCHAR(10) NOT NULL,
+    securityCode INTEGER NOT NULL,
+    nameOnCard VARCHAR(100) NOT NULL
   );
   `;
   await client.query(SQL);
@@ -226,6 +242,34 @@ const changeQuantity = async ({ quantity, product_id, cart_id }) => {
     RETURNING *
   `;
   const response = await client.query(SQL, [quantity, product_id, cart_id]);
+  return response.rows[0];
+};
+
+// ask user to enter delivery address
+const addDeliveryData = async ({ address, city, state, zipcode }) => {
+  const SQL = `
+    INSERT
+    INTO orderDelivery (id, address, city, state, zipcode)
+    VALUES($1, $2, $3, $4, $5)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [
+    uuid.v4(), address, city, state, zipcode
+  ]);
+  return response.rows[0];
+};
+
+// ask user to enter payment info
+const addPaymentInfo = async ({ cardNumber, expDate, securityCode, nameOnCard }) => {
+  const SQL = `
+    INSERT
+    INTO orderPayment (id, cardNumber, expDate, securityCode, nameOnCard)
+    VALUES($1, $2, $3, $4, $5)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [
+    uuid.v4(), cardNumber, expDate, securityCode, nameOnCard
+  ]);
   return response.rows[0];
 };
 
@@ -419,6 +463,8 @@ module.exports = {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  addDeliveryData,
+  addPaymentInfo,
   seeUser,
   updateUser,
   deleteUser,

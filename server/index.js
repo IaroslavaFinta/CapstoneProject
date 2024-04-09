@@ -15,6 +15,8 @@ const {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  addDeliveryData,
+  addPaymentInfo,
   seeUser,
   updateUser,
   deleteUser,
@@ -207,7 +209,33 @@ app.delete("/api/mycart/cartitems/:cartitemsId", isLoggedIn, async (req, res, ne
   }
 );
 
-// login user to purchase products
+// login user to enter delivery data
+app.put("/api/mycart/delivery", isLoggedIn, async (req, res, next) => {
+  try {
+    res.status(201).send(await addDeliveryData({
+      address: req.body.address,
+      city: req.body.city,
+      state: req.body.state,
+      zipcode: req.body.zipcode
+    }));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+// login to enter payment info
+app.put("/api/mycart/payment", isLoggedIn, async (req, res, next) => {
+  try {
+    res.status(201).send(await addPaymentInfo({
+      cardNumber: req.body.cardNumber,
+      expDate: req.body.expDate,
+      securityCode: req.body.securityCode,
+      nameOnCard: req.body.nameOnCard
+    }));
+  } catch (ex) {
+    next(ex);
+  }
+});
 
 //  login user to see information about user
 app.get("/api/myaccount", isLoggedIn, async (req, res, next) => {

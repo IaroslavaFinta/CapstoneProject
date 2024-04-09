@@ -103,7 +103,9 @@ const seeProduct = async (id) => {
   return response.rows[0];
 };
 
-//  log in user
+//  LOG IN USER
+
+//  new user
 const createUser = async ({ email, password, is_admin }) => {
   if (!is_admin) is_admin = false;
   const SQL = `
@@ -174,7 +176,20 @@ const seeCartProducts = async (cart_id) => {
   return response.rows;
 };
 
-// add a product to cart
+//  view total price of cart products
+const seeTotalPrice = async (cart_id) => {
+  const SQL = `
+      SELECT SUM (p.price * cp.quantity)
+      FROM cart_products cp
+      INNER JOIN products p
+      ON p.id=cp.product_id
+      WHERE cp.cart_id = $1
+    `;
+  const response = await client.query(SQL, [cart_id]);
+  return response.rows[0];
+};
+
+// add product to cart
 const addProductToCart = async ({ cart_id, product_id, quantity }) => {
   const SQL = `
     INSERT
@@ -191,6 +206,7 @@ const addProductToCart = async ({ cart_id, product_id, quantity }) => {
   return response.rows[0];
 };
 
+// delete product in cart
 const deleteProductFromCart = async ({ cart_id, product_id }) => {
   const SQL = `
     DELETE
@@ -213,6 +229,7 @@ const changeQuantity = async ({ quantity, product_id, cart_id }) => {
   return response.rows[0];
 };
 
+// see user data
 const seeUser = async (id) => {
   const SQL = `
     SELECT id, email, firstName, lastName, phoneNumber
@@ -223,6 +240,7 @@ const seeUser = async (id) => {
   return response.rows[0];
 };
 
+// update data about user
 const updateUser = async ({ firstName, lastName, phoneNumber, id }) => {
   const SQL = `
     UPDATE users
@@ -239,6 +257,7 @@ const updateUser = async ({ firstName, lastName, phoneNumber, id }) => {
   return response.rows;
 };
 
+//  delete user
 const deleteUser = async (id) => {
   const SQL = `
     DELETE FROM users
@@ -247,7 +266,9 @@ const deleteUser = async (id) => {
   await client.query(SQL, [id]);
 };
 
-// admin
+// ADMIN
+
+// see all users data
 const seeUsers = async () => {
   const SQL = `
     SELECT id, email, firstName, lastName, phoneNumber, is_admin
@@ -257,6 +278,7 @@ const seeUsers = async () => {
   return response.rows;
 };
 
+// see all carts
 const seeCarts = async () => {
   const SQL = `
     SELECT *
@@ -266,6 +288,7 @@ const seeCarts = async () => {
   return response.rows;
 };
 
+// create a new category
 const createCategory = async ({ name }) => {
   const SQL = `
     INSERT INTO categories(id, name)
@@ -276,6 +299,7 @@ const createCategory = async ({ name }) => {
   return response.rows[0];
 };
 
+// create a new product
 const createProduct = async ({
   name,
   imageURL,
@@ -301,6 +325,7 @@ const createProduct = async ({
   return response.rows[0];
 };
 
+//  edit a product
 const updateProduct = async ({ name, imageURL, price, description, inventory, category_name }) => {
   const SQL = `
     UPDATE products
@@ -314,6 +339,7 @@ const updateProduct = async ({ name, imageURL, price, description, inventory, ca
   return response.rows[0];
 };
 
+//  delete a product
 const deleteProduct = async (id) => {
   const SQL = `
     DELETE FROM products
@@ -389,6 +415,7 @@ module.exports = {
   seeCart,
   createCartProduct,
   seeCartProducts,
+  seeTotalPrice,
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,

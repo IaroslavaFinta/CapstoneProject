@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
 export default function MyCart({ token }) {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
-  let { id } = useParams();
+  const [totalPrice, setTotalPrice] = useState({});
 
   const getCartItems = async () => {
     try {
@@ -27,6 +27,27 @@ export default function MyCart({ token }) {
 
   useEffect(() => {
     getCartItems();
+  }, []);
+
+  useEffect(() => {
+    const getTotalPrice = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/mycart/cartitemsprice`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const result = await response.json();
+        setTotalPrice(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTotalPrice();
   }, []);
 
   async function changeQuantity() {
@@ -92,7 +113,8 @@ export default function MyCart({ token }) {
                     );
                   })}
                 </tbody>
-                <button>Checkout</button>
+              <h3>Total price: ${totalPrice.sum}</h3>
+              <button>Checkout</button>
               </table>
             ) : (
               // if no items in cart display text

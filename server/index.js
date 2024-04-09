@@ -11,6 +11,7 @@ const {
   seeCart,
   createCartProduct,
   seeCartProducts,
+  seeTotalPrice,
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
@@ -21,8 +22,6 @@ const {
   seeCarts,
   createCategory,
   createProduct,
-  updateProduct,
-  deleteProduct,
   authenticate,
   findUserWithToken
 } = require("./db");
@@ -155,6 +154,17 @@ app.get("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   }
 });
 
+// login user to see total price of cart
+app.get("/api/mycart/cartitemsprice", isLoggedIn, async (req, res, next) => {
+  try {
+    const cartId = await seeCart(req.user.id);
+    const totalPrice = await seeTotalPrice(cartId.id);
+    res.status(201).send(totalPrice);
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 // login user to add product to cart
 app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
@@ -234,67 +244,11 @@ app.delete("/api/myaccount", isLoggedIn, async (req, res, next) => {
 
 //  ADMIN
 //  functions - view products, edit products, view all users
+const adminProductsRouter = require("./router/adminProducts");
+app.use("/api/products", adminProductsRouter);
 
-// admin to see all products
-app.get("/api/products", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    res.send(await seeProducts());
-  } catch (ex) {
-    next(ex);
-  }
-});
-
-// admin to add a product
-app.post("/api/products", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    res.status(201).send(await createProduct({
-      name: req.body.name,
-      imageURL: req.body.imageURL,
-      price: req.body.price,
-      description: req.body.description,
-      inventory: req.body.inventory,
-      category_name: req.body.category_name
-    }));
-  } catch (ex) {
-    next(ex);
-  }
-});
-
-// admin to edit a product
-app.put("/api/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    res.status(201).send(await updateProduct({
-      id: req.params.productId,
-      name: req.body.name,
-      imageURL: req.body.imageURL,
-      price: req.body.price,
-      description: req.body.description,
-      inventory: req.body.inventory,
-      category_name: req.body.category_name
-    }));
-  } catch (ex) {
-    next(ex);
-  }
-});
-
-// admin to delete a product
-app.delete("/api/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    await deleteProduct(req.params.productId);
-    res.sendStatus(204);
-  } catch (ex) {
-    next(ex);
-  }
-});
-
-// admin see all users
-app.get("/api/users", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    res.send(await seeUsers());
-  } catch (ex) {
-    next(ex);
-  }
-});
+const adminUsersRouter = require("./router/adminUsers");
+app.use("api/users", adminUsersRouter);
 
 const init = async () => {
   await client.connect();

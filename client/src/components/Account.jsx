@@ -31,15 +31,12 @@ export default function Account({ token }) {
       const response = await fetch(`${API_URL}/api/myaccount`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-      const result = await response.json();
       if (!response.ok) {
         throw new Error("User could not be deleted.");
       }
-      return result;
     } catch (error) {
       console.log(error);
     }

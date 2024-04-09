@@ -26,7 +26,7 @@ export default function Register({ user, setUser, token, setToken }) {
       const result = await response.json();
       if (response.ok) {
         window.localStorage.setItem("token", result.token);
-        setSuccessMessage("Registered");
+        setSuccessMessage("Registered success. Please log in tp your account");
         setToken(result.token);
         setUser(email);
         console.log(result);
@@ -39,6 +39,17 @@ export default function Register({ user, setUser, token, setToken }) {
     }
   };
 
+  function validateForm() {
+    if (password.length < 8) {
+        alert('Invalid Form, Password must contain greater than or equal to 8 characters.')
+        return
+    }
+    if (email == password) {
+        alert('Invalid Form, Password cant be the same as email.')
+        return
+    }
+}
+
   return (
     <>
       {token ? (
@@ -46,6 +57,8 @@ export default function Register({ user, setUser, token, setToken }) {
       ) : (
         <div className="login">
           <h1>Register</h1>
+          {error && <p>{error}</p>}
+          {successMessage && <p>{successMessage}</p>}
           <form className="form" onSubmit={submit}>
             <label htmlFor={"email"} className="email">
               Email address:{" "}
@@ -65,7 +78,10 @@ export default function Register({ user, setUser, token, setToken }) {
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </label>
-            <button disabled={!email || !password}>Register</button>
+            <button disabled={!email || !password}
+                    type="submit"
+                    onClick={() => {validateForm()}}
+            >Register</button>
           </form>
           <p>If you already has an account, just log in</p>
           <button onClick={() => navigate("/login")}>Log in</button>

@@ -28,7 +28,7 @@ const createTables = async () => {
     password VARCHAR(100) NOT NULL,
     firstName VARCHAR(100),
     lastName VARCHAR(100),
-    phone_number VARCHAR(100),
+    phoneNumber VARCHAR(100),
     is_admin BOOLEAN NOT NULL DEFAULT FALSE
   );
   CREATE TABLE categories(
@@ -215,7 +215,7 @@ const changeQuantity = async ({ quantity, product_id, cart_id }) => {
 
 const seeUser = async (id) => {
   const SQL = `
-    SELECT id, email, firstName, lastName, phone_number
+    SELECT id, email, firstName, lastName, phoneNumber
     FROM users
     WHERE id=$1
   `;
@@ -223,17 +223,17 @@ const seeUser = async (id) => {
   return response.rows[0];
 };
 
-const updateUser = async ({ firstName, lastName, phone_number, id }) => {
+const updateUser = async ({ firstName, lastName, phoneNumber, id }) => {
   const SQL = `
     UPDATE users
-    SET firstName=$1, lastName=$2, phone_number=$3, updated_at=now()
+    SET firstName=$1, lastName=$2, phoneNumber=$3, updated_at=now()
     WHERE id=$4
-    RETURNING email, firstName, lastName, phone_number
+    RETURNING email, firstName, lastName, phoneNumber
   `;
   const response = await client.query(SQL, [
     firstName,
     lastName,
-    phone_number,
+    phoneNumber,
     id,
   ]);
   return response.rows;
@@ -250,7 +250,7 @@ const deleteUser = async (id) => {
 // admin
 const seeUsers = async () => {
   const SQL = `
-    SELECT id, email, firstName, lastName, phone_number, is_admin
+    SELECT id, email, firstName, lastName, phoneNumber, is_admin
     FROM users
   `;
   const response = await client.query(SQL);
@@ -354,18 +354,15 @@ const authenticate = async ({ email, password }) => {
 // use the id of verified token's payload
 // using the id as the parameter in your SQL statement
 const findUserWithToken = async (token) => {
-  console.log({token});
   let id;
   try {
     const payload = await jwt.verify(token, JWT);
     id = payload.id;
-    console.log(id);
   } catch (ex) {
     const error = Error("not authorized");
     error.status = 401;
     throw error;
-  }
-  console.log(token);
+  };
   const SQL = `
     SELECT id, email, is_admin
     FROM users

@@ -22,7 +22,7 @@ function App() {
         Terrarium
       </h1>
       <div id="container">
-        <Navigation />
+        <Navigation token={token}/>
         <div id="main section">
           <Routes>
             <Route path="/" element={<Home />} />

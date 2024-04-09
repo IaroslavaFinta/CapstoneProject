@@ -10,7 +10,7 @@ export default function MyCart({ token }) {
   const getCartItems = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/api/users/cart/cartProducts`,
+        `${API_URL}/api/mycart/cartitems`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -19,7 +19,6 @@ export default function MyCart({ token }) {
         }
       );
       const result = await response.json();
-      console.log(result);
       setCartItems(result);
     } catch (error) {
       console.log(error);
@@ -32,7 +31,7 @@ export default function MyCart({ token }) {
 
   async function changeQuantity() {
     try {
-      const response = await fetch(`${API_URL}/users//cart/cartProducts`, {
+      const response = await fetch(`${API_URL}/api/mycart/cartitems`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +48,7 @@ export default function MyCart({ token }) {
 
   async function deleteItem() {
     try {
-      const response = await fetch(`${API_URL}/api/users/cart/cartProducts/${id}`, {
+      const response = await fetch(`${API_URL}/api/mycart/cartitems/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -86,8 +85,8 @@ export default function MyCart({ token }) {
                     return (
                       <tr key={cartItem.id}>
                         <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
                         <td>{cartItem.quantity}</td>
+                        <td>{cartItem.price}</td>
                         <button onClick={() => {changeQuantity()}}>Increase</button>
                         <button onClick={() => {deleteItem()}}>Remove Item</button>
                       </tr>

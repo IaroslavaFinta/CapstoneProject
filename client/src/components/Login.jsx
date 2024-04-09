@@ -21,7 +21,6 @@ export default function Login({ user, setUser, token, setToken }) {
         },
       });
       const result = await response.json();
-      
       if (response.ok) {
         console.log(result);
       } else {

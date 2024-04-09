@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
 export default function UserSettings({ token }) {
@@ -9,13 +9,12 @@ export default function UserSettings({ token }) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  let { id } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/users/${id}`, {
-        method: "POST",
+      const response = await fetch(`${API_URL}/api/myaccount`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
@@ -47,44 +46,41 @@ export default function UserSettings({ token }) {
     <>
       {token ? (
         <div>
-           <h1>Please submit a form to update your data</h1>
-           <form className="form">
-              <label htmlFor={"firstName"} className="firstName">
-                    First Name:{" "}
-                    <input
-                        type={"firstName"}
-                        value={firstName}
-                        placeholder="firstName"
-                        onChange={(ev) => setFirstName(ev.target.value)}
-                    />
-                </label>
-                <label htmlFor={"lastName"} className="lastName">
-                    Last Name:{" "}
-                    <input
-                        type={"lastName"}
-                        value={lastName}
-                        placeholder="lastName"
-                        onChange={(ev) => setLastName(ev.target.value)}
-                    />
-                </label>
-                <label htmlFor={"phoneNumber"} className="phoneNumber">
-                    Phone Number:{" "}
-                    <input
-                        type={"phoneNumber"}
-                        value={phoneNumber}
-                        placeholder="phoneNumber"
-                        onChange={(ev) => setPhoneNumber(ev.target.value)}
-                    />
-                </label>
-                <button type="submit" onClick={handleSubmit}>
-                Submit
-                </button>
-            </form>
-            <button onClick={() => navigate(-1)}>Go Back</button>
+          <h1>Please submit a form to update your data</h1>
+          <form className="form">
+            <label htmlFor={"firstName"} className="firstName">
+              First Name:{" "}
+              <input
+                type={"firstName"}
+                value={firstName}
+                onChange={(ev) => setFirstName(ev.target.value)}
+              />
+            </label>
+            <label htmlFor={"lastName"} className="lastName">
+              Last Name:{" "}
+              <input
+                type={"lastName"}
+                value={lastName}
+                onChange={(ev) => setLastName(ev.target.value)}
+              />
+            </label>
+            <label htmlFor={"phoneNumber"} className="phoneNumber">
+              Phone Number:{" "}
+              <input
+                type={"phoneNumber"}
+                value={phoneNumber}
+                onChange={(ev) => setPhoneNumber(ev.target.value)}
+              />
+            </label>
+            <button type="submit" onClick={handleSubmit}>
+              Submit
+            </button>
+          </form>
+          <button onClick={() => navigate(-1)}>Go Back</button>
         </div>
       ) : (
         <div>
-            <p>If you already has an account, just log in</p>
+          <p>If you already has an account, just log in</p>
           <button onClick={() => navigate("/login")}>Log in</button>
         </div>
       )}

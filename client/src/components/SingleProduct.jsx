@@ -28,13 +28,17 @@ export default function SingleProduct({ token }) {
   // logged in user can add item to cart
   async function handleClick() {
     try {
-      const response = await fetch(`${API_URL}/users/${id}/cart/cartProducts`, {
-        method: "POST",
+      console.log(token);
+      const response = await fetch(`${API_URL}/api/mycart/cartitems`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(),
+        body: JSON.stringify({
+          quantity: 1,
+          product_id: productDetails.id
+        }),
       });
       const result = await response.json();
       setSuccessMessage(result.message);

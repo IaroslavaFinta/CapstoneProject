@@ -60,7 +60,6 @@ const isLoggedIn = async (req, res, next) => {
 
 //  middleware for admin
 const isAdmin = async (req, res, next) => {
-  console.log("IsAdmin",req.user);
   if (!req.user.is_admin){
     res.status(400).send("Not admin");
   }
@@ -134,7 +133,7 @@ app.get("/api/auth/me", isLoggedIn, (req, res, next) => {
 });
 
 // login in user to see cart details
-app.get("/api/users/cart", isLoggedIn, async (req, res, next) => {
+app.get("/api/mycart", isLoggedIn, async (req, res, next) => {
   try {
     res.send(await seeCart(req.user.id));
   } catch (ex) {
@@ -146,7 +145,7 @@ app.get("/api/users/cart", isLoggedIn, async (req, res, next) => {
 //Since, we're passing in the id of the user as a param
 //We need to fetch Carts that are associated with that User
 //Once we find the cart with that User, we can then use that cart_id to query for information about the cart
-app.get("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
+app.get("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
     const cartProducts = await seeCartProducts(cartId.id);
@@ -157,7 +156,7 @@ app.get("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to add product to cart
-app.post("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
+app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
     res.send(await addProductToCart({
@@ -171,7 +170,7 @@ app.post("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to change quantity of product in cart
-app.put("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
+app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
     res.send(await changeQuantity({
@@ -185,10 +184,12 @@ app.put("/api/users/cart/cartProducts", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to delete product from cart
-app.delete("/api/users/cart/cartProducts/:cartProductId", isLoggedIn, async (req, res, next) => {
+app.delete("/api/mycart/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
     try {
       const cartId = await seeCart(req.user.id);
-      await deleteProductFromCart({ cart_id: cartId.id, product_id: req.params.cartProductId });
+      await deleteProductFromCart({
+        cart_id: cartId.id,
+        product_id: req.params.cartitemsId});
       res.sendStatus(204);
     } catch (ex) {
       next(ex);
@@ -199,7 +200,7 @@ app.delete("/api/users/cart/cartProducts/:cartProductId", isLoggedIn, async (req
 // login user to purchase products
 
 //  login user to see information about user
-app.get("/api/users", isLoggedIn, async (req, res, next) => {
+app.get("/api/myaccount", isLoggedIn, async (req, res, next) => {
   try {
     res.status(201).send(await seeUser(req.user.id));
   } catch (ex) {
@@ -208,12 +209,12 @@ app.get("/api/users", isLoggedIn, async (req, res, next) => {
 });
 
 //  login user to update information about user
-app.put("/api/users", isLoggedIn, async (req, res, next) => {
+app.put("/api/myaccount", isLoggedIn, async (req, res, next) => {
   try {
     res.status(201).send(await updateUser({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      phone_number: req.body.phone_number,
+      phoneNumber: req.body.phoneNumber,
       id: req.user.id
     }));
   } catch (ex) {
@@ -222,7 +223,7 @@ app.put("/api/users", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to delete an account
-app.delete("/api/users", isLoggedIn, async (req, res, next) => {
+app.delete("/api/myaccount", isLoggedIn, async (req, res, next) => {
   try {
     await deleteUser(req.user.id);
     res.sendStatus(204);
@@ -235,7 +236,7 @@ app.delete("/api/users", isLoggedIn, async (req, res, next) => {
 //  functions - view products, edit products, view all users
 
 // admin to see all products
-app.get("/api/users/products", isLoggedIn, isAdmin, async (req, res, next) => {
+app.get("/api/products", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     res.send(await seeProducts());
   } catch (ex) {
@@ -244,7 +245,7 @@ app.get("/api/users/products", isLoggedIn, isAdmin, async (req, res, next) => {
 });
 
 // admin to add a product
-app.post("/api/users/products", isLoggedIn, isAdmin, async (req, res, next) => {
+app.post("/api/products", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     res.status(201).send(await createProduct({
       name: req.body.name,
@@ -260,7 +261,7 @@ app.post("/api/users/products", isLoggedIn, isAdmin, async (req, res, next) => {
 });
 
 // admin to edit a product
-app.put("/api/users/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
+app.put("/api/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     res.status(201).send(await updateProduct({
       id: req.params.productId,
@@ -277,7 +278,7 @@ app.put("/api/users/products/:productId", isLoggedIn, isAdmin, async (req, res, 
 });
 
 // admin to delete a product
-app.delete("/api/users/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
+app.delete("/api/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     await deleteProduct(req.params.productId);
     res.sendStatus(204);
@@ -287,7 +288,7 @@ app.delete("/api/users/products/:productId", isLoggedIn, isAdmin, async (req, re
 });
 
 // admin see all users
-app.get("/api/users/users", isLoggedIn, isAdmin, async (req, res, next) => {
+app.get("/api/users", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     res.send(await seeUsers());
   } catch (ex) {
@@ -298,9 +299,7 @@ app.get("/api/users/users", isLoggedIn, isAdmin, async (req, res, next) => {
 const init = async () => {
   await client.connect();
   console.log("connected to database");
-  if (!process.env.NODE_ENV !== "development") {
-await createTables();
-  }
+  await createTables();
   console.log("tables created");
   const [cages, accessories, books] = await Promise.all([
     createCategory({ name: "cages" }),

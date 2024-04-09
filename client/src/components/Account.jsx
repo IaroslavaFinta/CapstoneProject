@@ -1,31 +1,34 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
 export default function Account({ token }) {
   const navigate = useNavigate();
-  let { id } = useParams();
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await fetch(`${API_URL}/api/users`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const json = await response.json();
-      setUserData(json);
+      try {
+        const response = await fetch(`${API_URL}/api/myaccount`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const result = await response.json();
+        setUserData(result);
+    } catch (error) {
+        console.log(error);
+      }
     };
     getUserData();
   }, []);
 
   async function deleteUser() {
     try {
-      const response = await fetch(`${API_URL}/api/users`, {
+      const response = await fetch(`${API_URL}/api/myaccount`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -50,16 +53,12 @@ export default function Account({ token }) {
             // if token is valid display MyCart button, settings button, delete user button
             <>
               <ul className="user">
-                {userData.map((user) => {
-                    return (
-                      <li key={user.id}>
-                        <h3>Email: {user.email}</h3>
-                        <h3>First Name: {user.firstName}</h3>
-                        <h3>Last Name: {user.lastName}</h3>
-                        <h3>Phone number: {user.phone_number}</h3>
-                      </li>
-                    );
-                  })}
+                  <li key={userData.id}>
+                    <h3>Email: {userData.email}</h3>
+                    <h3>First Name: {userData.firstName}</h3>
+                    <h3>Last Name: {userData.lastName}</h3>
+                    <h3>Phone number: {userData.phone_number}</h3>
+                  </li>
               </ul>
               <button onClick={() => navigate("/myCart")}>MyCart</button>
               <button onClick={() => navigate("/UserSettings")}>User Settings</button>

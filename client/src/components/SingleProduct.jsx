@@ -11,7 +11,7 @@ export default function SingleProduct({ token }) {
   useEffect(() => {
     const getSingleProduct = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/products/${id}`, {
+        const response = await fetch(`${API_URL}/products/${id}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -29,8 +29,8 @@ export default function SingleProduct({ token }) {
   async function handleClick() {
     try {
       console.log(token);
-      const response = await fetch(`${API_URL}/api/mycart/cartitems`, {
-        method: "PUT",
+      const response = await fetch(`${API_URL}/mycart/cartitems`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

@@ -16,7 +16,7 @@ export default function Register({ user, setUser, token, setToken }) {
 
   const register = async (credentials) => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         body: JSON.stringify(credentials),
         headers: {
@@ -26,13 +26,13 @@ export default function Register({ user, setUser, token, setToken }) {
       const result = await response.json();
       if (response.ok) {
         window.localStorage.setItem("token", result.token);
-        setSuccessMessage("Registered success. Please log in tp your account");
+        setSuccessMessage(
+          "Registered successfully. Please log in to your account"
+        );
         setToken(result.token);
         setUser(email);
-        console.log(result);
       } else {
         setError("Failed to register");
-        console.log(result);
       }
     } catch (error) {
       console.log(error);
@@ -40,15 +40,17 @@ export default function Register({ user, setUser, token, setToken }) {
   };
 
   function validateForm() {
-    if (password.length < 8) {
-        alert('Invalid Form, Password must contain greater than or equal to 8 characters.')
-        return
+    if (password.length < 5) {
+      alert(
+        "Invalid Form, Password must contain greater than or equal to 5 characters."
+      );
+      return;
     }
     if (email == password) {
-        alert('Invalid Form, Password cant be the same as email.')
-        return
+      alert("Invalid Form, Password cant be the same as email.");
+      return;
     }
-}
+  }
 
   return (
     <>
@@ -65,7 +67,6 @@ export default function Register({ user, setUser, token, setToken }) {
               <input
                 type={"email"}
                 value={email}
-                placeholder="email"
                 onChange={(ev) => setEmail(ev.target.value)}
               />
             </label>
@@ -74,14 +75,18 @@ export default function Register({ user, setUser, token, setToken }) {
               <input
                 type={"password"}
                 value={password}
-                placeholder="password"
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </label>
-            <button disabled={!email || !password}
-                    type="submit"
-                    onClick={() => {validateForm()}}
-            >Register</button>
+            <button
+              disabled={!email || !password}
+              type="submit"
+              onClick={() => {
+                validateForm();
+              }}
+            >
+              Register
+            </button>
           </form>
           <p>If you already has an account, just log in</p>
           <button onClick={() => navigate("/login")}>Log in</button>

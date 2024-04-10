@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
 export default function Login({ user, setUser, token, setToken }) {
@@ -6,6 +7,8 @@ export default function Login({ user, setUser, token, setToken }) {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const submit = (ev) => {
     ev.preventDefault();
@@ -15,7 +18,7 @@ export default function Login({ user, setUser, token, setToken }) {
   const attemptLoginWithToken = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      const response = await fetch(`${API_URL}/api/auth/me`, {
+      const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -31,12 +34,12 @@ export default function Login({ user, setUser, token, setToken }) {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-      method: "POST",
-      body: JSON.stringify(credentials),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        body: JSON.stringify(credentials),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       const result = await response.json();
       if (response.ok) {
@@ -46,7 +49,7 @@ export default function Login({ user, setUser, token, setToken }) {
         setUser(`${email}`);
         setSuccessMessage("Login success");
       } else {
-        setError("Failed to login");
+        setError("Failed to login. Please use correct password or register");
         console.log(result);
       }
     } catch (error) {
@@ -61,33 +64,36 @@ export default function Login({ user, setUser, token, setToken }) {
 
   return (
     <>
-      {!token ?
-      (
+      {!token ? (
         <div>
-          <form className="form"
-        onSubmit={submit}>
-          <label htmlFor={"email"} className="email">
-          Email address:{" "}
-          <input
-            type={"email"}
-            value={email}
-            placeholder="email"
-            onChange={(ev) => setEmail(ev.target.value)}
-          />
-          </label>
-          <label htmlFor={"password"} className="password">
-            Password:{" "}
-          <input
-            type={"password"}
-            value={password}
-            placeholder="password"
-            onChange={(ev) => setPassword(ev.target.value)}
-          />
-          </label>
-          <button disabled={!email || !password}>Login</button>
-        </form>
-        <p>Don't have an account yet?</p>
-        <button onClick={() => navigate("/register")}>Sign Up</button>
+          <h1>Login</h1>
+          {error && <p>{error}</p>}
+          {successMessage && <p>{successMessage}</p>}
+          <form className="form" onSubmit={submit}>
+            <label htmlFor={"email"} className="email">
+              Email address:{" "}
+              <input
+                type={"email"}
+                value={email}
+                onChange={(ev) => setEmail(ev.target.value)}
+              />
+            </label>
+            <label htmlFor={"password"} className="password">
+              Password:{" "}
+              <input
+                type={"password"}
+                value={password}
+                onChange={(ev) => setPassword(ev.target.value)}
+              />
+            </label>
+            <button disabled={!email || !password}>Login</button>
+          </form>
+          <p>Forget password?</p>
+          <button onClick={() => navigate("/forgotpassword")}>
+            Password reset
+          </button>
+          <p>Don't have an account yet?</p>
+          <button onClick={() => navigate("/register")}>Register</button>
         </div>
       ) : (
         <div>

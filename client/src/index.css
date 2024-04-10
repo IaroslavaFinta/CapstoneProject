@@ -76,7 +76,7 @@ li {
   display: grid;
 }
 
-.email, .password {
+.email, .password, .firstName, .lastName, .phoneNumber {
   padding: 15px;
 }
 

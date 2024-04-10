@@ -10,7 +10,7 @@ export default function AllProducts() {
 
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch(`${API_URL}/api/products`);
+      const response = await fetch(`${API_URL}/products`);
       const json = await response.json();
       setProducts(json);
     };
@@ -19,6 +19,7 @@ export default function AllProducts() {
 
   const handleChange = (e) => {
     e.preventDefault();
+    console.log(products);
     setSearchInput(e.target.value);
   };
 

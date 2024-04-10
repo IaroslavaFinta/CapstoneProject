@@ -10,7 +10,7 @@ export default function MyCart({ token }) {
   const getCartItems = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/api/mycart/cartitems`,
+        `${API_URL}/mycart/cartitems`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -29,11 +29,11 @@ export default function MyCart({ token }) {
     getCartItems();
   }, []);
 
-  useEffect(() => {
-    const getTotalPrice = async () => {
+
+  const getTotalPrice = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/api/mycart/cartitemsprice`,
+          `${API_URL}/mycart/cartitemsprice`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -47,12 +47,14 @@ export default function MyCart({ token }) {
         console.log(error);
       }
     };
+
+  useEffect(() => {
     getTotalPrice();
   }, []);
 
-  async function changeQuantity() {
+  async function changeQuantity(cartItemId) {
     try {
-      const response = await fetch(`${API_URL}/api/mycart/cartitems`, {
+      const response = await fetch(`${API_URL}/mycart/cartitems/${cartItemId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -61,15 +63,16 @@ export default function MyCart({ token }) {
         body: JSON.stringify(),
       });
       const result = await response.json();
-      return result;
+      getCartItems();
     } catch (error) {
       console.log(error);
     }
   }
 
   async function deleteItem(cartItemId) {
+    console.log(cartItems);
     try {
-      const response = await fetch(`${API_URL}/api/mycart/cartitems/${cartItemId}`, {
+      const response = await fetch(`${API_URL}/mycart/cartitems/${cartItemId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -79,6 +82,7 @@ export default function MyCart({ token }) {
         throw new Error("Item could not be deleted.");
       }
       await getCartItems();
+      await getTotalPrice();
     } catch (error) {
       console.log(error);
     }
@@ -107,7 +111,7 @@ export default function MyCart({ token }) {
                         <td>{cartItem.name}</td>
                         <td>{cartItem.quantity}</td>
                         <td>{cartItem.price}</td>
-                        <button onClick={() => {changeQuantity()}}>Increase</button>
+                        <button onClick={() => {changeQuantity(cartItem.id)}}>Increase</button>
                         <button onClick={() => {deleteItem(cartItem.id)}}>Remove Item</button>
                       </tr>
                     );

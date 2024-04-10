@@ -11,7 +11,7 @@ export default function SingleCategory() {
   useEffect(() => {
     const getSingleCategory = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/categories/${name}`, {
+        const response = await fetch(`${API_URL}/categories/${name}`, {
           headers: {
             "Content-Type": "application/json",
           },

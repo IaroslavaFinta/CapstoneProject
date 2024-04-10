@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../main";
 
-export default function Account({ token }) {
+export default function Account({ token, setToken }) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/myaccount`,
+        const response = await fetch(`${API_URL}/myaccount`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export default function Account({ token }) {
 
   async function deleteUser() {
     try {
-      const response = await fetch(`${API_URL}/api/myaccount`, {
+      const response = await fetch(`${API_URL}/myaccount`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,7 +40,16 @@ export default function Account({ token }) {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const logout = () => {
+    window.localStorage.removeItem("token");
+    setToken({});
+  };
+
+  const navigateHome = () => {
+    navigate("/");
+  };
 
   return (
     <>
@@ -60,6 +69,7 @@ export default function Account({ token }) {
               <button onClick={() => navigate("/myCart")}>MyCart</button>
               <button onClick={() => navigate("/UserSettings")}>User Settings</button>
               <button onClick={() => {deleteUser()}}>Delete User</button>
+              <button onClick={() => {logout(); navigateHome()}}>Logout</button>
             </>
           ) : (
             // if token is not valid link to register or login

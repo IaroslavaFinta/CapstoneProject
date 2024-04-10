@@ -136,7 +136,12 @@ app.get("/api/auth/me", isLoggedIn, (req, res, next) => {
 // login in user to see cart details
 app.get("/api/mycart", isLoggedIn, async (req, res, next) => {
   try {
-    res.send(await seeCart(req.user.id));
+    const cartId = await seeCart(req.user.id);
+    if (!cartId) {
+      const cart = await createCart({user_id: req.user.id});
+      res.send(cart);
+    };
+    res.send(cartId);
   } catch (ex) {
     next(ex);
   }
@@ -148,7 +153,7 @@ app.get("/api/mycart", isLoggedIn, async (req, res, next) => {
 //Once we find the cart with that User, we can then use that cart_id to query for information about the cart
 app.get("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
-    const cartId = await seeCart(req.user.id);
+    let cartId = await seeCart(req.user.id);
     const cartProducts = await seeCartProducts(cartId.id);
     res.status(201).send(cartProducts);
   } catch (ex) {
@@ -168,9 +173,17 @@ app.get("/api/mycart/cartitemsprice", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to add product to cart
-app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
+app.post("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
+    if (!cartId) {
+      const cart = await createCart({user_id: req.user.id});
+      res.send(await addProductToCart({
+        cart_id: cart.id,
+        product_id: req.body.product_id,
+        quantity: req.body.quantity,
+      }));
+    }
     res.send(await addProductToCart({
       cart_id: cartId.id,
       product_id: req.body.product_id,
@@ -182,12 +195,17 @@ app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to change quantity of product in cart
-app.put("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
+app.put("/api/mycart/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
+    // if not cart exists create a new cart
+    if (!cartId){
+      await createCart(req.user.id);
+      cartId = await seeCart(req.user.id);
+    }
     res.send(await changeQuantity({
       quantity: req.body.quantity,
-      product_id: req.body.product_id,
+      product_id: req.params.cartitemsId,
       cart_id: cartId.id,
     }));
   } catch (ex) {
@@ -272,11 +290,70 @@ app.delete("/api/myaccount", isLoggedIn, async (req, res, next) => {
 
 //  ADMIN
 //  functions - view products, edit products, view all users
-const adminProductsRouter = require("./router/adminProducts");
-app.use("/api/products", adminProductsRouter);
+// admin to see all products
+app.get("/api/admin/products", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.send(await seeProducts());
+  } catch (ex) {
+    next(ex);
+  }
+});
 
-const adminUsersRouter = require("./router/adminUsers");
-app.use("api/users", adminUsersRouter);
+// admin to add new product
+app.post("/api/admin/products", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.status(201).send(
+      await createProduct({
+        name: req.body.name,
+        imageURL: req.body.imageURL,
+        price: req.body.price,
+        description: req.body.description,
+        inventory: req.body.inventory,
+        category_name: req.body.category_name,
+      })
+    );
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+// admin to edit a product
+app.put("/api/admin/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.status(201).send(
+      await updateProduct({
+        id: req.params.productId,
+        name: req.body.name,
+        imageURL: req.body.imageURL,
+        price: req.body.price,
+        description: req.body.description,
+        inventory: req.body.inventory,
+        category_name: req.body.category_name,
+      })
+    );
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+// admin to delete a product
+app.delete("/api/admin/products/:productId", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    await deleteProduct(req.params.productId);
+    res.sendStatus(204);
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+// admin see all users
+app.get("/api/admin/users", isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.send(await seeUsers());
+  } catch (ex) {
+    next(ex);
+  }
+});
 
 const init = async () => {
   await client.connect();

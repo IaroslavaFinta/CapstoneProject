@@ -13,7 +13,7 @@ export default function UserSettings({ token }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/api/myaccount`, {
+      const response = await fetch(`${API_URL}/myaccount`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

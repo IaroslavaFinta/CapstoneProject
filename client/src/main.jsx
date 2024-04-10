@@ -12,4 +12,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 )
 
-export const API_URL='http://localhost:3000';
+export const API_URL='http://localhost:3000/api';

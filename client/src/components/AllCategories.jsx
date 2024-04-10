@@ -8,7 +8,7 @@ export default function AllCategories() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const response = await fetch(`${API_URL}/api/categories`);
+      const response = await fetch(`${API_URL}/categories`);
       const json = await response.json();
       setCategories(json);
     };

@@ -11,6 +11,7 @@ import SingleCategory from "./components/SingleCategory";
 import MyCart from "./components/MyCart";
 import UserSettings from "./components/UserSettings";
 import OrderConfirm from "./components/OrderConfirm";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -23,11 +24,14 @@ function App() {
         Terrarium
       </h1>
       <div id="container">
-        <Navigation token={token}/>
+        <Navigation token={token} />
         <div id="main section">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/account" element={<Account token={token} />} />
+            <Route
+              path="/account"
+              element={<Account token={token} setToken={setToken} />}
+            />
             <Route
               path="/register"
               element={
@@ -50,6 +54,7 @@ function App() {
                 />
               }
             />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/products" element={<AllProducts />} />
             <Route
               path="/products/:id"
@@ -57,10 +62,7 @@ function App() {
             />
             <Route path="/categories/:name" element={<SingleCategory />} />
             <Route path="/myCart" element={<MyCart token={token} />} />
-            <Route
-              path="/order"
-              element={<OrderConfirm token={token} />}
-            />
+            <Route path="/order" element={<OrderConfirm token={token} />} />
             <Route
               path="/UserSettings"
               element={<UserSettings token={token} />}

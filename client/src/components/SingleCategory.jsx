@@ -6,6 +6,7 @@ export default function SingleCategory() {
   const [categoryDetails, setCategoryDetails] = useState([]);
   const navigate = useNavigate();
   let { name } = useParams();
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     const getSingleCategory = async () => {
@@ -24,15 +25,36 @@ export default function SingleCategory() {
     getSingleCategory();
   }, []);
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+  };
+
   return (
     <>
       <div className="singleCategory">
         <h1>{categoryDetails.name}</h1>
+        <div className="search-bar">
+          <div className="input-wrapper">
+            <input
+              className="search-input"
+              type="search"
+              placeholder="Type to search for a product"
+              value={searchInput}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         <ul className="categoryProducts">
-          {categoryDetails.map((categoryDetail) => {
+          {categoryDetails
+          .filter((categoryDetail) =>
+          categoryDetail.name.toLowerCase().match(searchInput.toLowerCase())
+        )
+          .map((categoryDetail) => {
             return (
               <li key={categoryDetail.id} className="product">
                 <h3>{categoryDetail.name}</h3>
+                <img src={categoryDetail.imageURL} alt="product image" />
                 <p>Price: ${categoryDetail.price}</p>
                 <button onClick={() => navigate(`/products/${categoryDetail.id}`)}>
                   View Product

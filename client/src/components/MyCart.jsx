@@ -114,7 +114,7 @@ export default function MyCart({ token }) {
                   })}
                 </tbody>
               <h3>Total price: ${totalPrice.sum}</h3>
-              <button>Checkout</button>
+              <button onClick={() => navigate("/order")}>Checkout</button>
               </table>
             ) : (
               // if no items in cart display text

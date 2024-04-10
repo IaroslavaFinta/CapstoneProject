@@ -10,6 +10,7 @@ import SingleProduct from "./components/SingleProduct";
 import SingleCategory from "./components/SingleCategory";
 import MyCart from "./components/MyCart";
 import UserSettings from "./components/UserSettings";
+import OrderConfirm from "./components/OrderConfirm";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -56,6 +57,10 @@ function App() {
             />
             <Route path="/categories/:name" element={<SingleCategory />} />
             <Route path="/myCart" element={<MyCart token={token} />} />
+            <Route
+              path="/order"
+              element={<OrderConfirm token={token} />}
+            />
             <Route
               path="/UserSettings"
               element={<UserSettings token={token} />}

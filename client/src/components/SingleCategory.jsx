@@ -33,7 +33,7 @@ export default function SingleCategory() {
   return (
     <>
       <div className="singleCategory">
-        <h1>{categoryDetails.name}</h1>
+        <h1>{name.toUpperCase()}</h1>
         <div className="search-bar">
           <div className="input-wrapper">
             <input
@@ -47,21 +47,25 @@ export default function SingleCategory() {
         </div>
         <ul className="categoryProducts">
           {categoryDetails
-          .filter((categoryDetail) =>
-          categoryDetail.name.toLowerCase().match(searchInput.toLowerCase())
-        )
-          .map((categoryDetail) => {
-            return (
-              <li key={categoryDetail.id} className="product">
-                <h3>{categoryDetail.name}</h3>
-                <img src={categoryDetail.imageURL} alt="product image" />
-                <p>Price: ${categoryDetail.price}</p>
-                <button onClick={() => navigate(`/products/${categoryDetail.id}`)}>
-                  View Product
-                </button>
-              </li>
-            );
-          })}
+            .filter((categoryDetail) =>
+              categoryDetail.name.toLowerCase().match(searchInput.toLowerCase())
+            )
+            .map((categoryDetail) => {
+              return (
+                <>
+                  <li key={categoryDetail.id} className="product">
+                    <h3>{categoryDetail.name}</h3>
+                    <img src={categoryDetail.imageurl} alt="product image" />
+                    <p>Price: ${categoryDetail.price}</p>
+                    <button
+                      onClick={() => navigate(`/products/${categoryDetail.id}`)}
+                    >
+                      View Product
+                    </button>
+                  </li>
+                </>
+              );
+            })}
         </ul>
         <button onClick={() => navigate(-1)}>Go Back</button>
       </div>

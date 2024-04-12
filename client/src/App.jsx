@@ -20,8 +20,10 @@ function App() {
   return (
     <>
       <h1 className="logo">
-        <img id="logo-image" src="" alt="terrarium store logo" />
-        Terrarium
+        <img
+        src="https://d20zyr0oabjxc2.cloudfront.net/variants/media/raw_images/javierfarfanc/2021/05/20210515153021.569-C4A2F5CC-63E9-4E62-9-300x300-1.jpeg?signature=B6BBB4F82254480347A69373F92FA7BD91864E530D437CBBE51EB4D75D9A83BE" 
+        alt="terrarium store logo" />
+        Reptile World
       </h1>
       <div id="container">
         <Navigation token={token} />

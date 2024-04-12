@@ -15,6 +15,7 @@ const {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  deleteItemsInCartWhenCheckout,
   addDeliveryData,
   addPaymentInfo,
   seeUser,
@@ -225,6 +226,18 @@ app.delete("/api/mycart/cartitems/:cartitemsId", isLoggedIn, async (req, res, ne
       next(ex);
     }
   }
+);
+
+// empty cart when done with checkout
+app.delete("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
+  try {
+    await deleteItemsInCartWhenCheckout({
+      user_id: req.user.id});
+    res.sendStatus(204);
+  } catch (ex) {
+    next(ex);
+  }
+}
 );
 
 // login user to enter delivery data

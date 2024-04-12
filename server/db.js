@@ -248,6 +248,16 @@ const changeQuantity = async ({ quantity, product_id, cart_id }) => {
   return response.rows[0];
 };
 
+//delete cart products when done with checkout
+const deleteItemsInCartWhenCheckout = async (user_id) => {
+  const SQL = `
+    DELETE
+    FROM carts
+    WHERE user_id = $1
+  `;
+  await client.query(SQL, [user_id]);
+};
+
 // ask user to enter delivery address
 const addDeliveryData = async ({ address, city, state, zipcode }) => {
   const SQL = `
@@ -466,6 +476,7 @@ module.exports = {
   addProductToCart,
   deleteProductFromCart,
   changeQuantity,
+  deleteItemsInCartWhenCheckout,
   addDeliveryData,
   addPaymentInfo,
   seeUser,

@@ -70,7 +70,6 @@ export default function MyCart({ token }) {
   }
 
   async function deleteItem(cartItemId) {
-    console.log(cartItems);
     try {
       const response = await fetch(`${API_URL}/mycart/cartitems/${cartItemId}`, {
         method: "DELETE",
@@ -87,6 +86,28 @@ export default function MyCart({ token }) {
       console.log(error);
     }
   }
+
+  async function deleteCartWhenCheckout() {
+    try {
+      const response = await fetch(`${API_URL}/mycart/cartitems`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Items could not be deleted.");
+      }
+      await getCartItems();
+      await getTotalPrice();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const navigateOrder = () => {
+    navigate("/order");
+  };
 
   return (
     <>

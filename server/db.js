@@ -249,13 +249,13 @@ const changeQuantity = async ({ quantity, product_id, cart_id }) => {
 };
 
 //delete cart products when done with checkout
-const deleteItemsInCartWhenCheckout = async (user_id) => {
+const deleteItemsInCartWhenCheckout = async (cart_id) => {
   const SQL = `
     DELETE
-    FROM carts
-    WHERE user_id = $1
+    FROM cart_products
+    WHERE cart_id = $1
   `;
-  await client.query(SQL, [user_id]);
+  await client.query(SQL, [cart_id]);
 };
 
 // ask user to enter delivery address

@@ -99,7 +99,6 @@ export default function MyCart({ token }) {
         throw new Error("Items could not be deleted.");
       }
       await getCartItems();
-      await getTotalPrice();
     } catch (error) {
       console.log(error);
     }
@@ -139,7 +138,7 @@ export default function MyCart({ token }) {
                   })}
                 </tbody>
               <h3>Total price: ${totalPrice.sum}</h3>
-              <button onClick={() => navigate("/order")}>Checkout</button>
+              <button onClick={() => {navigateOrder(); deleteCartWhenCheckout()}}>Checkout</button>
               </table>
             ) : (
               // if no items in cart display text

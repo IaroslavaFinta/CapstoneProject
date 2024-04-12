@@ -231,8 +231,8 @@ app.delete("/api/mycart/cartitems/:cartitemsId", isLoggedIn, async (req, res, ne
 // empty cart when done with checkout
 app.delete("/api/mycart/cartitems", isLoggedIn, async (req, res, next) => {
   try {
-    await deleteItemsInCartWhenCheckout({
-      user_id: req.user.id});
+    const cartId = await seeCart(req.user.id);
+    await deleteItemsInCartWhenCheckout(cartId.id);
     res.sendStatus(204);
   } catch (ex) {
     next(ex);

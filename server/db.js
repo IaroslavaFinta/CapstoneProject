@@ -211,7 +211,10 @@ const addProductToCart = async ({ cart_id, product_id, quantity }) => {
     INSERT
     INTO cart_products (id, cart_id, product_id, quantity)
     VALUES($1, $2, $3, $4)
-    RETURNING *
+    ON CONFLICT (cart_id, product_id)
+    DO UPDATE SET
+      quantity = cart_products.quantity + $4
+    RETURNING *;
   `;
   const response = await client.query(SQL, [
     uuid.v4(),

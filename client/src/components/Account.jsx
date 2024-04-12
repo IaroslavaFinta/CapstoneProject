@@ -66,7 +66,8 @@ export default function Account({ token, setToken }) {
                     <h3>Phone number: {userData.phonenumber}</h3>
                   </li>
               </ul>
-              <button onClick={() => navigate("/myCart")}>MyCart</button>
+              <button onClick={() => navigate("/myCart")}>My Cart</button>
+              <button>My Orders</button>
               <button onClick={() => navigate("/UserSettings")}>User Settings</button>
               <button onClick={() => {deleteUser()}}>Delete User</button>
               <button onClick={() => {logout(); navigateHome()}}>Logout</button>

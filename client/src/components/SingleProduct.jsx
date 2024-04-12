@@ -4,7 +4,8 @@ import { API_URL } from "../main";
 
 export default function SingleProduct({ token }) {
   const [productDetails, setProductDetails] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   let { id } = useParams();
 
@@ -41,7 +42,11 @@ export default function SingleProduct({ token }) {
         }),
       });
       const result = await response.json();
-      setSuccessMessage("Item is added to cart");
+      if (response.ok) {
+        setSuccessMessage("Item is added to cart");
+      } else {
+        setError("Unable to add this item to cart");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +63,7 @@ export default function SingleProduct({ token }) {
           <>
           <button onClick={()=>{handleClick()}}>Add Product</button>
           {successMessage && <p>{successMessage}</p>}
+          {error && <p>{error}</p>}
           </>
         ) : (
           <p>Item is available for purchase, please log in</p>

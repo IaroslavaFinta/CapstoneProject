@@ -41,7 +41,7 @@ export default function SingleProduct({ token }) {
         }),
       });
       const result = await response.json();
-      setSuccessMessage(result.message);
+      setSuccessMessage("Item is added to cart");
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +55,10 @@ export default function SingleProduct({ token }) {
         <h2>Description: {productDetails.description}</h2>
         <p>Price: {productDetails.price}</p>
         {token ? (
+          <>
           <button onClick={()=>{handleClick()}}>Add Product</button>
+          {successMessage && <p>{successMessage}</p>}
+          </>
         ) : (
           <p>Item is available for purchase, please log in</p>
         )}

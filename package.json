@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npm install && cd client && npm install && npm run build",
     "start:dev": "nodemon server",
     "create_tables": "psql the_shopper_db -f ./server/schema.sql",
     "test": "echo \"Error: no test specified\" && exit 1"

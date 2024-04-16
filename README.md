@@ -1,1 +1,4 @@
-# Unit4.CareerSim.Starter
+Capstone Project
+
+E-Commerce store
+Used routes, sql, react, javascript, css

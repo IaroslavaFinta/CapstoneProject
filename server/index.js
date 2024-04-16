@@ -39,12 +39,7 @@ app.use(express.json());
 // Log the requests as they come in
 app.use(require("morgan")("dev"));
 
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
-  methods: ['GET', 'POST', 'PUT','DELETE'],
-  credentials: true,
-  withCredentials: true,
-}))
+app.use(cors())
 
 //for deployment only
 const path = require('path');

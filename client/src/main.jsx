@@ -12,5 +12,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 )
 
-export const API_URL=import.meta.env.API_URL || 'http://localhost:3000/api';
+export const API_URL=import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 console.log(API_URL);

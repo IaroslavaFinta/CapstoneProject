@@ -29,7 +29,6 @@ export default function MyCart({ token }) {
     getCartItems();
   }, []);
 
-
   const getTotalPrice = async () => {
       try {
         const response = await fetch(
@@ -60,10 +59,13 @@ export default function MyCart({ token }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(),
+        body: JSON.stringify({
+          quantity: 1
+        }),
       });
       const result = await response.json();
-      getCartItems();
+      await getCartItems();
+      await getTotalPrice();
     } catch (error) {
       console.log(error);
     }
@@ -104,8 +106,8 @@ export default function MyCart({ token }) {
     }
   }
 
-  const navigateOrder = () => {
-    navigate("/order");
+  const navigateCheckoutDelivery = () => {
+    navigate("/checkout/delivery");
   };
 
   return (
@@ -131,14 +133,14 @@ export default function MyCart({ token }) {
                         <td>{cartItem.name}</td>
                         <td>{cartItem.quantity}</td>
                         <td>{cartItem.price}</td>
-                        <button onClick={() => {changeQuantity(cartItem.id)}}>Increase</button>
+                        <button onClick={() => {changeQuantity(cartItem.id)}}>-</button>
                         <button onClick={() => {deleteItem(cartItem.id)}}>Remove Item</button>
                       </tr>
                     );
                   })}
                 </tbody>
               <h3>Total price: ${totalPrice.sum}</h3>
-              <button onClick={() => {navigateOrder(); deleteCartWhenCheckout()}}>Checkout</button>
+              <button onClick={() => {navigateCheckoutDelivery(); deleteCartWhenCheckout()}}>Checkout</button>
               </table>
             ) : (
               // if no items in cart display text

@@ -15,7 +15,7 @@ const {
 
 const router = express.Router();
 
-// route: /api/users
+// route: /api/auth
 
 // create an account
 router.post("/register", async (req, res, next) => {

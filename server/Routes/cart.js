@@ -92,8 +92,8 @@ router.put("/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
     res.send(
       await changeQuantity({
         quantity: req.body.quantity,
-        product_id: req.params.cartitemsId,
         cart_id: cartId.id,
+        product_id: req.params.cartitemsId
       })
     );
   } catch (ex) {

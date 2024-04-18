@@ -102,14 +102,15 @@ const deleteProductFromCart = async ({ cart_id, product_id }) => {
   return response.rows[0];
 };
 
-const changeQuantity = async ({ quantity, product_id, cart_id }) => {
+const changeQuantity = async ({ quantity, cart_id, product_id }) => {
   const SQL = `
       UPDATE cart_products
-      SET quantity=$1
-      WHERE product_id=$2 AND cart_id=$3
-      RETURNING *
+      SET
+        quantity = cart_products.quantity - $1
+      WHERE cart_id=$2 AND product_id=$3
+      RETURNING *;
     `;
-  const response = await client.query(SQL, [quantity, product_id, cart_id]);
+  const response = await client.query(SQL, [quantity, cart_id, product_id]);
   return response.rows[0];
 };
 

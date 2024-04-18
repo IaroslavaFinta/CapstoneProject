@@ -30,7 +30,7 @@ app.use(cors());
 // parse the body into JS Objects
 app.use(express.json());
 
-app.use("/api/users", userRouter);
+app.use("/api/auth", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/mycart", cartRouter);

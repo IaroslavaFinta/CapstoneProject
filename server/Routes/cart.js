@@ -5,7 +5,8 @@ const {
   seeCartProducts,
   addProductToCart,
   seeTotalPrice,
-  changeQuantity,
+  changeQuantityIncrease,
+  changeQuantityDecrease,
   deleteProductFromCart,
   deleteItemsInCartWhenCheckout
 } = require("../db/cart.js");
@@ -80,7 +81,7 @@ router.post("/cartitems", isLoggedIn, async (req, res, next) => {
   }
 });
 
-// login user to change quantity of product in cart
+// login user to increase quantity of product in cart
 router.put("/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
@@ -90,7 +91,28 @@ router.put("/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
       cartId = await seeCart(req.user.id);
     }
     res.send(
-      await changeQuantity({
+      await changeQuantityIncrease({
+        quantity: req.body.quantity,
+        cart_id: cartId.id,
+        product_id: req.params.cartitemsId
+      })
+    );
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+// login user to decrease quantity of product in cart
+router.put("/cartitems/:cartitemsId", isLoggedIn, async (req, res, next) => {
+  try {
+    const cartId = await seeCart(req.user.id);
+    // if not cart exists create a new cart
+    if (!cartId) {
+      await createCart(req.user.id);
+      cartId = await seeCart(req.user.id);
+    }
+    res.send(
+      await changeQuantityDecrease({
         quantity: req.body.quantity,
         cart_id: cartId.id,
         product_id: req.params.cartitemsId

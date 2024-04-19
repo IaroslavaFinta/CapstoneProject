@@ -51,7 +51,7 @@ export default function MyCart({ token }) {
     getTotalPrice();
   }, []);
 
-  async function changeQuantity(cartItemId) {
+  async function changeQuantity(cartItemId, quantity) {
     try {
       const response = await fetch(`${API_URL}/mycart/cartitems/${cartItemId}`, {
         method: "PUT",
@@ -60,7 +60,7 @@ export default function MyCart({ token }) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          quantity: 1
+          quantity
         }),
       });
       const result = await response.json();
@@ -133,7 +133,8 @@ export default function MyCart({ token }) {
                         <td>{cartItem.name}</td>
                         <td>{cartItem.quantity}</td>
                         <td>{cartItem.price}</td>
-                        <button onClick={() => {changeQuantity(cartItem.id)}}>-</button>
+                        <button onClick={() => {changeQuantity(cartItem.id, +1)}}>+</button>
+                        <button onClick={() => {changeQuantity(cartItem.id, -1)}}>-</button>
                         <button onClick={() => {deleteItem(cartItem.id)}}>Remove Item</button>
                       </tr>
                     );

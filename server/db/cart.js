@@ -102,11 +102,23 @@ const deleteProductFromCart = async ({ cart_id, product_id }) => {
   return response.rows[0];
 };
 
-const changeQuantity = async ({ quantity, cart_id, product_id }) => {
+const changeQuantityIncrease = async ({ quantity, cart_id, product_id }) => {
   const SQL = `
       UPDATE cart_products
       SET
-        quantity = cart_products.quantity - $1
+        quantity = cart_products.quantity + $1
+      WHERE cart_id=$2 AND product_id=$3
+      RETURNING *;
+    `;
+  const response = await client.query(SQL, [quantity, cart_id, product_id]);
+  return response.rows[0];
+};
+
+const changeQuantityDecrease = async ({ quantity, cart_id, product_id }) => {
+  const SQL = `
+      UPDATE cart_products
+      SET
+        quantity = cart_products.quantity + $1
       WHERE cart_id=$2 AND product_id=$3
       RETURNING *;
     `;
@@ -142,7 +154,8 @@ module.exports = {
   createCartProduct,
   addProductToCart,
   deleteProductFromCart,
-  changeQuantity,
+  changeQuantityIncrease,
+  changeQuantityDecrease,
   deleteItemsInCartWhenCheckout,
   seeCarts
 };

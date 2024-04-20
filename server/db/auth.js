@@ -78,6 +78,25 @@ const isAdmin = async (req, res, next) => {
   next();
 };
 
+const findInventoryForProduct = async ({ product_id }) => {
+  const SQL = `
+      SELECT inventory
+      FROM products
+      WHERE product_id=$1
+      RETURNING *
+    `;
+  const response = await client.query(SQL, [product_id]);
+  return response.rows[0];
+};
+
+// middleware for inventory check
+const quantityMoreInventory = async (req, res, next) => {
+  if (req.body.quantity > findInventoryForProduct(req.body.product_id)){
+    res.status(400).send("Not enough inventory, unable to purchase");
+  }
+  next();
+};
+
 module.exports = {
     client,
     authenticate,

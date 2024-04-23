@@ -1,4 +1,11 @@
-.main{
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+/* .main{
   background-color: #F7C0D2;
   color:#7E2D2D;
 }
@@ -147,4 +154,4 @@ img {
     display: block;
     text-align: center;
   }
-}
+} */

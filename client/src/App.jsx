@@ -19,16 +19,16 @@ function App() {
   const [user, setUser] = useState(null);
 
   return (
-    <>
-      <h1 className="logo">
+    <div className="bg-red-300 h-screen">
+      <h1>
         <img
         src="https://d20zyr0oabjxc2.cloudfront.net/variants/media/raw_images/javierfarfanc/2021/05/20210515153021.569-C4A2F5CC-63E9-4E62-9-300x300-1.jpeg?signature=B6BBB4F82254480347A69373F92FA7BD91864E530D437CBBE51EB4D75D9A83BE" 
         alt="terrarium store logo" />
         Reptile World
       </h1>
-      <div id="container">
+      <div>
         <Navigation token={token} />
-        <div id="main section">
+        <div>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
@@ -74,7 +74,7 @@ function App() {
           </Routes>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

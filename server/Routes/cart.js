@@ -10,7 +10,7 @@ const {
   deleteProductFromCart,
   deleteItemsInCartWhenCheckout
 } = require("../db/cart.js");
-const { isLoggedIn } = require("../db/auth.js");
+const { isLoggedIn, quantityMoreInventory } = require("../db/auth.js");
 
 const router = express.Router();
 

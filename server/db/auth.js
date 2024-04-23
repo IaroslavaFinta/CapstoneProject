@@ -101,6 +101,7 @@ module.exports = {
     client,
     authenticate,
     findUserWithToken,
+    quantityMoreInventory,
     isLoggedIn,
     isAdmin
   }

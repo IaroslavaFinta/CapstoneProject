@@ -54,11 +54,12 @@ export default function SingleProduct({ token }) {
 
   return (
     <>
-      <div className="singleProduct">
-        <h1>{productDetails.name}</h1>
-        <img src={productDetails.imageurl} alt="product image" />
-        <h2>Description: {productDetails.description}</h2>
+      <div>
+        <h1 className="text-5xl">{productDetails.name}</h1>
+        <img className="w-60 sepia" src={productDetails.imageurl} alt="product image" />
+        <h2 className="text-2xl">Description: {productDetails.description}</h2>
         <p>Price: {productDetails.price}</p>
+        {/* <h1 className={token ? "bg-red-200 p-2" : "sr-only"}>{JSON.stringify(token)}</h1> */}
         {token ? (
           <>
           <button onClick={()=>{handleClick()}}>Add Product</button>
@@ -68,7 +69,7 @@ export default function SingleProduct({ token }) {
         ) : (
           <p>Item is available for purchase, please log in</p>
         )}
-        <button onClick={() => navigate(-1)}>Go Back</button>
+        <button className="btn-primary" onClick={() => navigate(-1)}>Go Back</button>
       </div>
     </>
   );

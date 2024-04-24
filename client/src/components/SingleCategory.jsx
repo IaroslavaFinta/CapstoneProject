@@ -32,8 +32,8 @@ export default function SingleCategory() {
 
   return (
     <>
-      <div className="singleCategory">
-        <h1>{name.toUpperCase()}</h1>
+      <div>
+        <h1 className="text-5xl">{name.toUpperCase()}</h1>
         <div className="search-bar">
           <div className="input-wrapper">
             <input
@@ -45,7 +45,7 @@ export default function SingleCategory() {
             />
           </div>
         </div>
-        <ul className="categoryProducts">
+        <ul className="p-2.5 m-2.5 list-none justify-start grid grid-cols-2">
           {categoryDetails
             .filter((categoryDetail) =>
               categoryDetail.name.toLowerCase().match(searchInput.toLowerCase())
@@ -53,8 +53,8 @@ export default function SingleCategory() {
             .map((categoryDetail) => {
               return (
                 <>
-                  <li key={categoryDetail.id} className="product">
-                    <h3>{categoryDetail.name}</h3>
+                  <li key={categoryDetail.id} className="p-5">
+                    <h3 className="text-2xl">{categoryDetail.name}</h3>
                     <img src={categoryDetail.imageurl} alt="product image" />
                     <p>Price: ${categoryDetail.price}</p>
                     <button

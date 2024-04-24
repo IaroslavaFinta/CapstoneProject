@@ -54,33 +54,48 @@ export default function Account({ token, setToken }) {
 
   return (
     <>
-      <div className="account">
-        <h1>Account</h1>
+      <div className="p-16">
+        <h1 className="text-5xl">Account</h1>
           {token ? (
             // if token is valid display MyCart button, settings button, delete user button
             <>
-              <ul className="user">
-                  <li key={userData.id}>
-                    <h3>Email: {userData.email}</h3>
-                    <h3>First Name: {userData.firstname}</h3>
-                    <h3>Last Name: {userData.lastname}</h3>
-                    <h3>Phone number: {userData.phonenumber}</h3>
+              <ul className="p-2.5 m-2.5 list-none justify-start grid grid-cols-2">
+                  <li className="p-5" key={userData.id}>
+                    <h3 className="text-2xl">Email: {userData.email}</h3>
+                    <h3 className="text-2xl">First Name: {userData.firstname}</h3>
+                    <h3 className="text-2xl">Last Name: {userData.lastname}</h3>
+                    <h3 className="text-2xl">Phone number: {userData.phonenumber}</h3>
                   </li>
               </ul>
-              <button onClick={() => navigate("/myCart")}>My Cart</button>
-              <button>My Orders</button>
-              <button onClick={() => navigate("/UserSettings")}>User Settings</button>
-              <button onClick={() => {deleteUser(); navigateHome()}}>Delete User</button>
-              <button onClick={() => {logout(); navigateHome()}}>Logout</button>
+              <button className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5" onClick={() => navigate("/myCart")}>My Cart</button>
+              <button className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
+                   >My Orders</button>
+              <button className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
+                   onClick={() => navigate("/UserSettings")}>User Settings</button>
+              <button className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
+                   onClick={() => {deleteUser(); navigateHome()}}>Delete User</button>
+              <button className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
+                   onClick={() => {logout(); navigateHome()}}>Logout</button>
             </>
           ) : (
             // if token is not valid link to register or login
-            <h3>
+            <h3 className="text-2xl">
               Please log in
-              <button onClick={() => navigate("/login")}>Login</button>
+              <button
+                className="border-2 border-solid border-inherit
+                    bg-white p-2 rounded-lg text-base m-2.5"
+                onClick={() => navigate("/login")}>Login</button>
               or register
-              <button onClick={() => navigate("/register")}>Register</button>
-              to your account
+              <button
+                className="border-2 border-solid border-inherit
+                bg-white p-2 rounded-lg text-base m-2.5"
+                onClick={() => navigate("/register")}>Register</button>
+                to your account
             </h3>
           )
         }

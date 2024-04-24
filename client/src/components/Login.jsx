@@ -66,7 +66,7 @@ export default function Login({ user, setUser, token, setToken }) {
     <>
       {!token ? (
         <div>
-          <h1>Login</h1>
+          <h1 className="text-5xl">Login</h1>
           {error && <p>{error}</p>}
           {successMessage && <p>{successMessage}</p>}
           <form className="form" onSubmit={submit}>
@@ -86,19 +86,31 @@ export default function Login({ user, setUser, token, setToken }) {
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </label>
-            <button disabled={!email || !password}>Login</button>
+            <button 
+            className="border-2 border-solid border-inherit
+            bg-white p-2 rounded-lg text-base m-2.5"
+            disabled={!email || !password}>Login</button>
           </form>
           <p>Forget password?</p>
-          <button onClick={() => navigate("/forgotpassword")}>
+          <button 
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={() => navigate("/forgotpassword")}>
             Password reset
           </button>
           <p>Don't have an account yet?</p>
-          <button onClick={() => navigate("/register")}>Register</button>
+          <button 
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={() => navigate("/register")}>Register</button>
         </div>
       ) : (
         <div>
-          <h1>Logged in as {user}</h1>
-          <button onClick={logout}>Logout</button>
+          <h1 className="text-5xl">Logged in as {user}</h1>
+          <button 
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={logout}>Logout</button>
         </div>
       )}
     </>

@@ -19,9 +19,9 @@ function App() {
   const [user, setUser] = useState(null);
 
   return (
-    <div className="bg-red-300 h-screen">
-      <h1>
-        <img
+    <div className="bg-zinc-900 text-yellow-500 h-screen items-center align-middle content-start">
+      <h1 className="text-3xl">
+        <img className="size-32 mr-4 pt-7 pl-7"
         src="https://d20zyr0oabjxc2.cloudfront.net/variants/media/raw_images/javierfarfanc/2021/05/20210515153021.569-C4A2F5CC-63E9-4E62-9-300x300-1.jpeg?signature=B6BBB4F82254480347A69373F92FA7BD91864E530D437CBBE51EB4D75D9A83BE" 
         alt="terrarium store logo" />
         Reptile World

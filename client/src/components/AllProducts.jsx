@@ -39,18 +39,26 @@ export default function AllProducts() {
           />
         </div>
       </div>
-      <ul className="product">
+      <ul className="p-2.5 m-2.5 list-none justify-start grid grid-cols-2">
         {products
           .filter((product) =>
             product.name.toLowerCase().match(searchInput.toLowerCase())
           )
           .map((product) => {
             return (
-              <li key={product.id} className="product">
-                <h3>{product.name}</h3>
-                <img src={product.imageurl} alt="product image" />
+              <li key={product.id} className="p-5">
+                <h3 className="text-2xl">{product.name}</h3>
+                <img
+                  className="w-28"
+                  src={product.imageurl}
+                  alt="product image"
+                />
                 <p>Price: ${product.price}</p>
-                <button onClick={() => navigate(`/products/${product.id}`)}>
+                <button
+                  className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
+                  onClick={() => navigate(`/products/${product.id}`)}
+                >
                   View Product
                 </button>
               </li>

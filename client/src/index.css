@@ -2,14 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @layer base {
+  h1 {
+    @apply text-4xl;
+  }
+} */
 
-
-
-/* .main{
-  background-color: #F7C0D2;
-  color:#7E2D2D;
+@layer components{
+  .btn-primary{
+    @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+  
+  }
+  .btn-primary:hover{
+    @apply bg-blue-700;
+  }
 }
 
+
+/* 
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -25,33 +35,12 @@ body {
   min-height: 100vh;
 }
 
-.logo{
-  text-align: left;
-  margin-left: 0;
-  margin-bottom: 30px;
-}
-
-#logo-image {
-  width: 100px;
-  height: auto;
-  margin-right: 15px;
-}
-
-.home, .account{
-  padding: 100px;
-}
-
 .navbar {
   justify-content: space-evenly;
   display: flex;
   position: fixed;
   margin: 100px;
   top: 0;
-}
-
-.nav{
-  margin: 100px;
-  text-align: center;
 }
 
 ul {
@@ -61,14 +50,17 @@ ul {
   display: grid;
   grid-template-columns: repeat(2, auto);
   justify-content: start;
+  p-2.5 m-2.5 list-none justify-start grid grid-cols-2
 }
 
 li {
   padding: 20px;
+  p-5
 }
 
 .category {
   display: flex;
+  flex
 }
 
 .form {
@@ -98,10 +90,23 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
   margin: 10px;
+  
+  border-2
+  border-solid
+  border-inherit
+  bg-white
+  p-2
+  rounded-lg
+  text-base
+  m-2.5
+  
+  className="border-2 border-solid border-inherit
+                   bg-white p-2 rounded-lg text-base m-2.5"
 }
 
 h3 {
   font-size: 1.5rem;
+  text-2xl
 }
 
 p {
@@ -111,6 +116,7 @@ p {
 img {
   width: 100px;
   height: auto;
+  w-24
 }
 
 .search-bar {

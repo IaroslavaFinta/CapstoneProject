@@ -87,17 +87,29 @@ export default function DeliveryData({ token }) {
                 onChange={(ev) => setZipcode(ev.target.value)}
               />
             </label>
-            <button type="submit" onClick={handleSubmit}>
+            <button
+            className="border-2 border-solid border-inherit
+            bg-white p-2 rounded-lg text-base m-2.5"
+            type="submit" onClick={handleSubmit}>
               Submit
             </button>
           </form>
-          <button onClick={() => navigateOrderConfirm()}>Next</button>
-          <button onClick={() => navigate(-1)}>Go Back</button>
+          <button
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={() => navigateOrderConfirm()}>Next</button>
+          <button
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={() => navigate(-1)}>Go Back</button>
         </div>
       ) : (
         <div>
           <p>If you already has an account, just log in</p>
-          <button onClick={() => navigate("/login")}>Log in</button>
+          <button
+          className="border-2 border-solid border-inherit
+          bg-white p-2 rounded-lg text-base m-2.5"
+          onClick={() => navigate("/login")}>Log in</button>
         </div>
       )}
     </>

@@ -149,7 +149,7 @@ export default function MyCart({ token }) {
             )
           ) : (
             // if token is not valid link to register or login
-            <h3>
+            <h3 className="text-2xl">
               Please log in
               <button onClick={() => navigate("/login")}>Login</button>
               or register

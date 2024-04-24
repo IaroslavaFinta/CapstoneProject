@@ -55,10 +55,10 @@ export default function Register({ user, setUser, token, setToken }) {
   return (
     <>
       {token ? (
-        <h1>Logged in as {user}</h1>
+        <h1 className="text-5xl">Logged in as {user}</h1>
       ) : (
         <div className="login">
-          <h1>Register</h1>
+          <h1 className="text-5xl">Register</h1>
           {error && <p>{error}</p>}
           {successMessage && <p>{successMessage}</p>}
           <form className="form" onSubmit={submit}>

@@ -10,7 +10,7 @@ const {
   deleteProductFromCart,
   deleteItemsInCartWhenCheckout
 } = require("../db/cart.js");
-const { isLoggedIn } = require("../db/auth.js");
+const { isLoggedIn, quantityMoreInventory } = require("../db/auth.js");
 
 const router = express.Router();
 
@@ -56,7 +56,7 @@ router.get("/cartitemsprice", isLoggedIn, async (req, res, next) => {
 });
 
 // login user to add product to cart
-router.post("/cartitems", isLoggedIn, async (req, res, next) => {
+router.post("/cartitems", isLoggedIn, quantityMoreInventory,async (req, res, next) => {
   try {
     const cartId = await seeCart(req.user.id);
     if (!cartId) {
